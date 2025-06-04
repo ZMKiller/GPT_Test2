@@ -914,9 +914,4 @@ namespace HomelessToMillionaire
     }
 
 
-    /// <summary>
-    /// Данные системы работы для сохранения
-    /// </summary>
-    [System.Serializable]
-
 }

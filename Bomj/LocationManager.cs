@@ -184,6 +184,16 @@ namespace HomelessToMillionaire
             return currentLocationData;
         }
 
+        public Location CurrentLocation
+        {
+            get
+            {
+                if (Enum.TryParse<Location>(currentLocationType.ToString(), out var loc))
+                    return loc;
+                return Location.Street;
+            }
+        }
+
         /// <summary>
         /// Получить тип текущей локации
         /// </summary>
@@ -230,6 +240,18 @@ namespace HomelessToMillionaire
         public HashSet<LocationType> GetUnlockedLocations()
         {
             return new HashSet<LocationType>(unlockedLocations);
+        }
+
+        /// <summary>
+        /// Установить доступность локации (используется системой времени)
+        /// </summary>
+        public void SetLocationAvailable(Location location, bool available)
+        {
+            var data = GetLocationData((LocationType)location);
+            if (data != null)
+            {
+                data.transitionCost = available ? data.transitionCost : float.MaxValue;
+            }
         }
 
         /// <summary>

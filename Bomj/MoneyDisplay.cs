@@ -36,7 +36,7 @@ namespace HomelessToMillionaire
 
         [Header("Анимация счетчика")]
         [SerializeField] private float counterAnimationDuration = 1f; // Длительность анимации счетчика
-        [SerializeField] private AnimationCurve counterCurve = AnimationCurve.EaseOut(0, 0, 1, 1);
+        [SerializeField] private AnimationCurve counterCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField] private bool useCounterAnimation = true;     // Использовать анимацию счетчика
 
         [Header("Эффекты")]
@@ -171,7 +171,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик заработка денег
         /// </summary>
-        private void OnMoneyEarned(float amount)
+        private void OnMoneyEarned(MoneyEventData data)
         {
             PlayMoneyEffect(true);
         }

@@ -180,6 +180,16 @@ namespace HomelessToMillionaire
         }
 
         /// <summary>
+        /// Установить модификатор деградации, основанный на физической форме
+        /// </summary>
+        public void SetFitnessModifier(float modifier)
+        {
+            hungerIncreaseRate *= modifier;
+            moodDecreaseRate *= modifier;
+            healthDecreaseRate *= modifier;
+        }
+
+        /// <summary>
         /// Получить текущий модификатор деградации от локации
         /// </summary>
         public float GetLocationDegradationModifier()

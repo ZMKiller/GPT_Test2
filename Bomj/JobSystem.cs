@@ -259,6 +259,18 @@ namespace HomelessToMillionaire
             return availableJobs.Where(job => job.jobType == jobType && IsJobAvailable(job)).ToList();
         }
 
+        public bool CanStartJob(Job job)
+        {
+            return !isWorking && IsJobAvailable(job);
+        }
+
+        public float GetCurrentJobProgress()
+        {
+            if (!isWorking || currentJob == null)
+                return 0f;
+            return 1f - workTimeRemaining / (currentJob.duration * 3600f);
+        }
+
         /// <summary>
         /// Проверить доступность работы
         /// </summary>
@@ -707,7 +719,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             UpdateAvailableJobs();
         }
@@ -901,29 +913,4 @@ namespace HomelessToMillionaire
         public string failureReason;
     }
 
-    /// <summary>
-    /// Данные системы работы для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class JobSystemSaveData
-    {
-        public string currentJobTitle = "";
-        public bool isWorking = false;
-        public float workTimeRemaining = 0f;
-        public int jobsCompletedToday = 0;
-        public long lastWorkDay = 0;
-        public List<CompletedJobData> completedJobs = new List<CompletedJobData>();
-    }
-
-    /// <summary>
-    /// Данные завершенной работы
-    /// </summary>
-    [System.Serializable]
-    public class CompletedJobData
-    {
-        public string title;
-        public string jobType;
-        public double payment;
-        public long completionTime;
-    }
 }

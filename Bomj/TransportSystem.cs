@@ -931,10 +931,10 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены локации
         /// </summary>
-        private void OnLocationChanged(Location oldLocation, Location newLocation)
+        private void OnLocationChanged(LocationType oldLocation, LocationType newLocation)
         {
             // Добавить пройденное расстояние
-            float distance = CalculateDistance(oldLocation, newLocation);
+            float distance = CalculateDistance((Location)oldLocation, (Location)newLocation);
             totalDistanceTraveled += distance;
 
             // Обновить одометр текущего транспорта
@@ -944,7 +944,7 @@ namespace HomelessToMillionaire
             }
 
             // Проверить совместимость транспорта с новой локацией
-            if (!CanUseTransportInLocation(currentTransport, newLocation))
+            if (!CanUseTransportInLocation(currentTransport, (Location)newLocation))
             {
                 if (notificationSystem != null)
                 {
@@ -956,7 +956,7 @@ namespace HomelessToMillionaire
             }
 
             // Проверить риск кражи в опасных районах
-            CheckTheftRisk(newLocation);
+            CheckTheftRisk((Location)newLocation);
         }
 
         /// <summary>

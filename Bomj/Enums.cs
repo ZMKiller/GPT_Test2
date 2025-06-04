@@ -24,6 +24,7 @@ namespace HomelessToMillionaire
         EarningsMultiplier,     // Множитель заработка
         ExperienceMultiplier,   // Множитель получения опыта
         LearningSpeedMultiplier,// Множитель скорости обучения
+        LearningMultiplier = LearningSpeedMultiplier,
         WorkEfficiencyMultiplier,// Множитель эффективности работы
 
         // Модификаторы удачи и шансов
@@ -336,7 +337,8 @@ namespace HomelessToMillionaire
     {
         EarlyMorning,   // Раннее утро (5-8)
         Morning,        // Утро (8-12)
-        Afternoon,      // День (12-17)
+        Day,
+        Afternoon = Day,
         Evening,        // Вечер (17-21)
         Night,          // Ночь (21-1)
         LateNight       // Поздняя ночь (1-5)

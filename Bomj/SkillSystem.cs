@@ -471,7 +471,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             // Добавить очки навыков за повышение уровня
             AddSkillPoints(skillPointsPerLevel);
@@ -487,14 +487,17 @@ namespace HomelessToMillionaire
         public SkillSystemSaveData GetSaveData()
         {
             var skillsData = new Dictionary<string, int>();
+            var levelData = new Dictionary<SkillType, int>();
             foreach (var skill in skills)
             {
                 skillsData[skill.Key.ToString()] = skill.Value;
+                levelData[skill.Key] = skill.Value;
             }
 
             return new SkillSystemSaveData
             {
                 skills = skillsData,
+                skillLevels = levelData,
                 availableSkillPoints = this.availableSkillPoints
             };
         }
@@ -504,19 +507,30 @@ namespace HomelessToMillionaire
         /// </summary>
         public void LoadData(SkillSystemSaveData data)
         {
-            if (data?.skills != null)
+            if (data != null)
             {
-                foreach (var skillData in data.skills)
+                if (data.skillLevels != null && data.skillLevels.Count > 0)
                 {
-                    if (Enum.TryParse<SkillType>(skillData.Key, out SkillType skillType))
+                    foreach (var kvp in data.skillLevels)
                     {
-                        skills[skillType] = skillData.Value;
-                        RecalculateSkillBonus(skillType);
+                        skills[kvp.Key] = kvp.Value;
+                        RecalculateSkillBonus(kvp.Key);
                     }
                 }
+                else if (data.skills != null)
+                {
+                    foreach (var skillData in data.skills)
+                    {
+                        if (Enum.TryParse<SkillType>(skillData.Key, out SkillType skillType))
+                        {
+                            skills[skillType] = skillData.Value;
+                            RecalculateSkillBonus(skillType);
+                        }
+                    }
+                }
+                availableSkillPoints = data.availableSkillPoints;
             }
 
-            availableSkillPoints = data?.availableSkillPoints ?? 0;
             OnSkillPointsChanged?.Invoke(availableSkillPoints);
         }
 
@@ -589,26 +603,7 @@ namespace HomelessToMillionaire
         public float duration;
         public float startTime;
 
-        public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
-        {
-            this.skillType = skillType;
-            this.value = value;
-            this.operation = operation;
-            this.source = source;
-            this.duration = duration;
-            this.startTime = Time.time;
-        }
-    }
 
-    [Serializable]
-    public class SkillModifier
-    {
-        public SkillType skillType;
-        public float value;
-        public ModifierOperation operation;
-        public string source;
-        public float duration;
-        public float startTime;
 
         public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
         {

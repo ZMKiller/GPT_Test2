@@ -539,7 +539,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня игрока
         /// </summary>
-        private void OnPlayerLevelUp(LevelUpEventData data)
+        private void OnPlayerLevelUp(LevelUpData data)
         {
             Debug.Log($"Поздравляем! Достигнут {data.newLevel} уровень!");
         }

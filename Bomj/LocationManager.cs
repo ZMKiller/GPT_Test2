@@ -243,6 +243,18 @@ namespace HomelessToMillionaire
         }
 
         /// <summary>
+        /// Установить доступность локации (используется системой времени)
+        /// </summary>
+        public void SetLocationAvailable(Location location, bool available)
+        {
+            var data = GetLocationData((LocationType)location);
+            if (data != null)
+            {
+                data.transitionCost = available ? data.transitionCost : float.MaxValue;
+            }
+        }
+
+        /// <summary>
         /// Разблокировать локацию
         /// </summary>
         public void UnlockLocation(LocationType locationType)

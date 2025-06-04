@@ -226,7 +226,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             ShowNotification($"Поздравляем! Достигнут {data.newLevel} уровень!", 
                            NotificationType.Achievement, NotificationPriority.High);

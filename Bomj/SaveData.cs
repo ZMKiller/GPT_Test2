@@ -546,6 +546,8 @@ namespace HomelessToMillionaire
     public class SkillSystemSaveData : BaseSaveData
     {
         public Dictionary<SkillType, int> skillLevels = new Dictionary<SkillType, int>();
+        // Legacy field for older saves
+        public Dictionary<string, int> skills = new Dictionary<string, int>();
         public int availableSkillPoints = 0;
 
         public override bool IsValid()

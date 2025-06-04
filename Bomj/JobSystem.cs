@@ -912,5 +912,4 @@ namespace HomelessToMillionaire
         public bool wasSuccessful;
         public string failureReason;
     }
-
 }

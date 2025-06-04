@@ -149,6 +149,7 @@ namespace HomelessToMillionaire
         Money,          // Изменение денег
         Critical,       // Критическое уведомление
         Important       // Важное уведомление
+
     }
 
     /// <summary>

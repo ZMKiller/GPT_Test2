@@ -96,6 +96,7 @@ namespace HomelessToMillionaire
         public double moneyGained;
         // for backwards compatibility
         public double moneyBonus => moneyGained;
+
         public List<string> unlockedFeatures; // Разблокированные функции
 
         public LevelUpData() { }

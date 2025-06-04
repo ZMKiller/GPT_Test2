@@ -289,7 +289,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             if (saveOnLevelUp && enableAutoSave)
             {
@@ -311,11 +311,11 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик получения денег
         /// </summary>
-        private void OnMoneyEarned(float amount)
+        private void OnMoneyEarned(MoneyEventData data)
         {
-            if (saveOnBigMoneyGain && enableAutoSave && amount >= bigMoneyThreshold)
+            if (saveOnBigMoneyGain && enableAutoSave && data.amount >= bigMoneyThreshold)
             {
-                TriggerAutoSave($"Получено {GameUtils.FormatMoney(amount)}");
+                TriggerAutoSave($"Получено {GameUtils.FormatMoney((float)data.amount)}");
             }
         }
 

@@ -1200,12 +1200,12 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик изменения денег
         /// </summary>
-        private void OnMoneyChanged(double oldAmount, double newAmount)
+        private void OnMoneyChanged(double currentAmount, double change, string source)
         {
             // Богатство влияет на репутацию в определенных кругах
-            if (newAmount > oldAmount && newAmount > 10000)
+            if (change > 0 && currentAmount > 10000)
             {
-                float wealthGain = (float)((newAmount - oldAmount) / 1000f);
+                float wealthGain = (float)(change / 1000f);
                 ChangeReputation(SocialGroup.Business, wealthGain * 0.1f);
                 ChangeReputation(SocialGroup.HighSociety, wealthGain * 0.05f);
             }

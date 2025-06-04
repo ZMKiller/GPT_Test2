@@ -31,7 +31,7 @@ namespace HomelessToMillionaire
 
         [Header("Настройки солнца и луны")]
         [SerializeField] private float sunMoonRadius = 50f;       // Радиус орбиты солнца/луны
-        [SerializeField] private Vector3 sunriseDirection = Vector3.east; // Направление восхода
+        [SerializeField] private Vector3 sunriseDirection = Vector3.right; // Направление восхода
         [SerializeField] private float maxSunAngle = 80f;         // Максимальный угол солнца
 
         [Header("Эффекты погоды")]

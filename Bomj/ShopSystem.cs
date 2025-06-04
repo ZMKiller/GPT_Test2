@@ -25,6 +25,8 @@ namespace HomelessToMillionaire
         private SkillSystem skillSystem;
         private AudioSource audioSource;
 
+        private float timePriceMultiplier = 1f;
+
         // Товары
         private Dictionary<ShopCategory, List<ShopItem>> shopItems = new Dictionary<ShopCategory, List<ShopItem>>();
         private List<ShopItem> purchasedItems = new List<ShopItem>();
@@ -391,7 +393,7 @@ namespace HomelessToMillionaire
                 return false;
             }
 
-            double totalCost = item.price * quantity;
+            double totalCost = item.price * quantity * timePriceMultiplier;
             
             if (!moneySystem.CanAfford(totalCost))
             {
@@ -442,7 +444,7 @@ namespace HomelessToMillionaire
                     NotificationType.Success
                 );
 
-                Debug.Log($"Куплено: {item.name} x{quantity} за {GameUtils.FormatMoney(totalCost)}");
+                Debug.Log($"Куплено: {item.name} x{quantity} за {GameUtils.FormatMoney((float)totalCost)}");
                 return true;
             }
 
@@ -608,7 +610,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             // Проверить разблокировку новых категорий
             foreach (ShopCategory category in Enum.GetValues(typeof(ShopCategory)))
@@ -712,7 +714,7 @@ namespace HomelessToMillionaire
                 Debug.Log($"=== {GetCategoryName(category.Key)} ===");
                 foreach (var item in category.Value)
                 {
-                    Debug.Log($"{item.name} - {GameUtils.FormatMoney(item.price)} " +
+                    Debug.Log($"{item.name} - {GameUtils.FormatMoney((float)item.price)} " +
                              $"(Уровень: {item.levelRequirement}, Качество: {item.quality})");
                 }
             }
@@ -732,6 +734,37 @@ namespace HomelessToMillionaire
                     PurchaseItem(randomItem);
                 }
             }
+        }
+
+        /// <summary>
+        /// Задать множитель цен на основе времени суток
+        /// </summary>
+        public void SetTimeBasedPriceMultiplier(float multiplier)
+        {
+            timePriceMultiplier = Mathf.Max(0.1f, multiplier);
+        }
+
+        // --- Legacy helpers for older scripts ---
+        public IEnumerable<ShopItem> GetAvailableItemsByCategory(ShopCategory category)
+        {
+            return GetItemsByCategory(category);
+        }
+
+        // Compatibility wrapper
+        public IEnumerable<ShopItem> GetItemsByCategory(ShopCategory category)
+        {
+            return GetCategoryItems(category);
+        }
+
+        public bool CanBuyItem(string itemId)
+        {
+            var item = GetItemById(itemId);
+            return item != null && moneySystem.CanAfford(item.price * timePriceMultiplier);
+        }
+
+        public bool BuyItem(ShopItem item)
+        {
+            return PurchaseItem(item);
         }
 
         #endregion
@@ -760,9 +793,9 @@ namespace HomelessToMillionaire
         public bool isConsumable = true;
         public int maxStack = 1;
 
-        public ShopItem(string id, string name, ShopCategory category, ItemQuality quality, double price, 
+        public ShopItem(string id, string name, ShopCategory category, ItemQuality quality, double price,
                        int levelRequirement, string description, Dictionary<StatType, float> statEffects = null,
-                       Dictionary<string, float> permanentEffects = null, 
+                       Dictionary<string, float> permanentEffects = null,
                        Dictionary<SkillType, int> skillRequirements = null,
                        bool isConsumable = true, int maxStack = 1)
         {
@@ -779,25 +812,15 @@ namespace HomelessToMillionaire
             this.isConsumable = isConsumable;
             this.maxStack = maxStack;
         }
+
+        public ShopItem(string name, ShopCategory category, ItemQuality quality, double price,
+                       int levelRequirement, string description, Dictionary<StatType, float> statEffects = null,
+                       Dictionary<string, float> permanentEffects = null,
+                       bool isConsumable = true, int maxStack = 1)
+            : this(Guid.NewGuid().ToString(), name, category, quality, price, levelRequirement,
+                   description, statEffects, permanentEffects, null, isConsumable, maxStack)
+        {
+        }
     }
 
-    /// <summary>
-    /// Данные системы магазина для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class ShopSystemSaveData
-    {
-        public List<PurchasedItemData> purchasedItems = new List<PurchasedItemData>();
-    }
-
-    /// <summary>
-    /// Данные купленного товара
-    /// </summary>
-    [System.Serializable]
-    public class PurchasedItemData
-    {
-        public string name;
-        public string category;
-        public long purchaseTime;
-    }
-}
+ }

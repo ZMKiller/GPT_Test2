@@ -1080,6 +1080,12 @@ namespace HomelessToMillionaire
     public class AchievementSystemSaveData
     {
         public List<AchievementProgressData> achievementProgress = new List<AchievementProgressData>();
+
+        public bool IsValid() => achievementProgress != null;
+        public void ApplyDefaults()
+        {
+            achievementProgress = new List<AchievementProgressData>();
+        }
     }
 
     /// <summary>

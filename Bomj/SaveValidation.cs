@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
-// using Newtonsoft.Json; // Заменено на Unity JsonUtility
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HomelessToMillionaire
@@ -299,8 +299,8 @@ namespace HomelessToMillionaire
             // Проверка существования текущей локации в разблокированных
             if (!string.IsNullOrEmpty(locationData.currentLocation))
             {
-                if (locationData.unlockedLocations == null || 
-                    !System.Array.Exists(locationData.unlockedLocations, l => l == locationData.currentLocation))
+                    if (locationData.unlockedLocations == null ||
+                        !locationData.unlockedLocations.Exists(l => l == locationData.currentLocation))
                 {
                     return new ValidationResult(false, "Текущая локация не найдена в разблокированных");
                 }

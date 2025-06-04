@@ -259,6 +259,18 @@ namespace HomelessToMillionaire
             return availableJobs.Where(job => job.jobType == jobType && IsJobAvailable(job)).ToList();
         }
 
+        public bool CanStartJob(Job job)
+        {
+            return !isWorking && IsJobAvailable(job);
+        }
+
+        public float GetCurrentJobProgress()
+        {
+            if (!isWorking || currentJob == null)
+                return 0f;
+            return 1f - workTimeRemaining / (currentJob.duration * 3600f);
+        }
+
         /// <summary>
         /// Проверить доступность работы
         /// </summary>
@@ -340,7 +352,7 @@ namespace HomelessToMillionaire
             workTimeRemaining = 0f;
 
             GameEvents.TriggerNotification("Работа завершена досрочно", NotificationType.Warning);
-            Debug.Log($"Работа завершена досрочно. Получено: {GameUtils.FormatMoney(partialPayment)}");
+            Debug.Log($"Работа завершена досрочно. Получено: {GameUtils.FormatMoney((float)partialPayment)}");
         }
 
         /// <summary>
@@ -519,12 +531,12 @@ namespace HomelessToMillionaire
             });
 
             GameEvents.TriggerNotification(
-                $"Работа завершена! Получено: {GameUtils.FormatMoney(payment)}",
+                $"Работа завершена! Получено: {GameUtils.FormatMoney((float)payment)}",
                 NotificationType.Success
             );
 
             Debug.Log($"Работа завершена: {currentJob.title}. " +
-                     $"Получено: {GameUtils.FormatMoney(payment)}, Опыт: {GetJobExperience(currentJob)}");
+                     $"Получено: {GameUtils.FormatMoney((float)payment)}, Опыт: {GetJobExperience(currentJob)}");
 
             // Очистка состояния
             isWorking = false;
@@ -707,7 +719,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             UpdateAvailableJobs();
         }
@@ -804,7 +816,7 @@ namespace HomelessToMillionaire
             Debug.Log($"Доступно работ: {jobs.Count}");
             foreach (var job in jobs)
             {
-                Debug.Log($"{job.title} - {GameUtils.FormatMoney(job.payment)}/час " +
+                Debug.Log($"{job.title} - {GameUtils.FormatMoney((float)job.payment)}/час " +
                          $"(Уровень: {job.levelRequirement}, Продолжительность: {job.duration}ч)");
             }
         }
@@ -901,29 +913,4 @@ namespace HomelessToMillionaire
         public string failureReason;
     }
 
-    /// <summary>
-    /// Данные системы работы для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class JobSystemSaveData
-    {
-        public string currentJobTitle = "";
-        public bool isWorking = false;
-        public float workTimeRemaining = 0f;
-        public int jobsCompletedToday = 0;
-        public long lastWorkDay = 0;
-        public List<CompletedJobData> completedJobs = new List<CompletedJobData>();
-    }
-
-    /// <summary>
-    /// Данные завершенной работы
-    /// </summary>
-    [System.Serializable]
-    public class CompletedJobData
-    {
-        public string title;
-        public string jobType;
-        public double payment;
-        public long completionTime;
-    }
 }

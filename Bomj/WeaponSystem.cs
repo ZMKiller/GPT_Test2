@@ -53,6 +53,14 @@ namespace HomelessToMillionaire
         public bool HasWeapon => currentWeapon != null;
         public bool IsArmed => HasWeapon && currentWeapon.weaponType != WeaponType.None;
 
+        /// <summary>
+        /// Получить текущее оружие
+        /// </summary>
+        public Weapon GetCurrentWeapon()
+        {
+            return currentWeapon;
+        }
+
         #region Unity Methods
 
         private void Awake()
@@ -627,10 +635,10 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены локации
         /// </summary>
-        private void OnLocationChanged(Location oldLocation, Location newLocation)
+        private void OnLocationChanged(LocationType oldLocation, LocationType newLocation)
         {
             // В некоторых локациях нужно скрывать оружие
-            if (IsArmed && IsRestrictedLocation(newLocation))
+            if (IsArmed && IsRestrictedLocation((Location)newLocation))
             {
                 if (currentPlacement == WeaponPlacement.Visible || 
                     currentPlacement == WeaponPlacement.InHand)

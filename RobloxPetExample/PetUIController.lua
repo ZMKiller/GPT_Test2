@@ -1,4 +1,5 @@
 -- PetUIController.lua
+
 -- Client-side script that displays inventory UI with equipped slots and tooltips
 
 local Players = game:GetService("Players")
@@ -118,11 +119,13 @@ local function refreshInventory()
     end
     for _, child in ipairs(gridFrame:GetChildren()) do
         if child:IsA("ImageButton") then
+
             child:Destroy()
         end
     end
 
     local data = requestInventory:InvokeServer()
+
 
     for index = 1, 5 do
         local petName = data.EquippedPets[index]
@@ -168,6 +171,7 @@ local function refreshInventory()
             countLabel.TextSize = 14
             countLabel.Parent = btn
         end
+
     end
 end
 

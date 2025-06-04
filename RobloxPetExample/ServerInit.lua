@@ -26,11 +26,13 @@ requestInventory.OnServerInvoke = function(player)
     return PetInventoryModule.GetPlayerData(player)
 end
 
+
 equipPet.OnServerEvent:Connect(function(player, action, value)
     if action == "equip" and type(value) == "string" then
         PetInventoryModule.EquipPet(player, value)
     elseif action == "unequip" and type(value) == "number" then
         PetInventoryModule.UnequipPet(player, value)
+
     end
 end)
 

@@ -1,11 +1,13 @@
 local PetInventoryModule = {}
 local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local PetDataModule = require(ReplicatedStorage:WaitForChild("PetDataModule"))
 
 local DEFAULT_PETS = {}
+
 local added = 0
 for petName in pairs(PetDataModule.Pets) do
     if added >= 3 then break end
@@ -13,10 +15,12 @@ for petName in pairs(PetDataModule.Pets) do
     added += 1
 end
 
+
 local inventoryStore = DataStoreService:GetDataStore("PetInventory")
 
 -- Player data cache
 local playerData = {}
+
 
 local function ensureFormat(data)
     if type(data.Inventory) == "table" then
@@ -40,17 +44,20 @@ local function ensureFormat(data)
     end
 end
 
+
 local function loadData(player)
     local success, data = pcall(function()
         return inventoryStore:GetAsync(player.UserId)
     end)
     if success and type(data) == "table" then
+
         ensureFormat(data)
         playerData[player.UserId] = data
     else
         playerData[player.UserId] = {
             Inventory = table.clone(DEFAULT_PETS),
             EquippedPets = {},
+
             Favorites = {}
         }
     end
@@ -65,6 +72,7 @@ local function saveData(player)
 end
 
 function PetInventoryModule.AddPet(player, petName)
+
     local data = PetInventoryModule.GetPlayerData(player)
     data.Inventory[petName] = (data.Inventory[petName] or 0) + 1
 end
@@ -90,6 +98,7 @@ end
 
 function PetInventoryModule.ToggleFavorite(player, petName)
     local data = PetInventoryModule.GetPlayerData(player)
+
     if data.Favorites[petName] then
         data.Favorites[petName] = nil
     else
@@ -97,19 +106,24 @@ function PetInventoryModule.ToggleFavorite(player, petName)
     end
 end
 
+
 -- Returns player data, creating default tables if needed.
 function PetInventoryModule.GetPlayerData(player)
     local data = playerData[player.UserId]
     if not data then
         data = {
             Inventory = table.clone(DEFAULT_PETS),
+
             EquippedPets = {},
+
             Favorites = {}
         }
         playerData[player.UserId] = data
     end
+
     ensureFormat(data)
     return data
+
 end
 
 Players.PlayerAdded:Connect(loadData)

@@ -2,6 +2,7 @@ local PetDataModule = {}
 
 -- Table of all available pets
 PetDataModule.Pets = {
+
     ["Cat"] = {
         Name = "Cat",
         Icon = "rbxassetid://1234",
@@ -20,6 +21,7 @@ PetDataModule.Pets = {
         Strength = 10,
         Rarity = "Rare"
     },
+
 }
 
 return PetDataModule

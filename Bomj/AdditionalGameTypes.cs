@@ -12,7 +12,6 @@ namespace HomelessToMillionaire
         SelfStudy
     }
 
-
     public enum NotificationPosition
     {
         Top,

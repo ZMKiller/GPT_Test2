@@ -853,6 +853,7 @@ namespace HomelessToMillionaire
         Vandalism,
         IllegalBusiness,
         BribeAttempt
+
     }
 
     /// <summary>
@@ -867,6 +868,7 @@ namespace HomelessToMillionaire
         Vandalism,
         ResistingArrest,
         BriberyAttempt
+
     }
 
     /// <summary>

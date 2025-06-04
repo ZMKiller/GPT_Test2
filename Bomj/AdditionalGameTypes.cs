@@ -36,6 +36,7 @@ namespace HomelessToMillionaire.Additional
         BottomRight
     }
 
+
     public enum ActivityType
     {
         Work,
@@ -43,6 +44,7 @@ namespace HomelessToMillionaire.Additional
         Rest,
         Exercise
     }
+
 
     public enum LoadingState
     {

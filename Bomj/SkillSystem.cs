@@ -599,4 +599,25 @@ namespace HomelessToMillionaire
             this.startTime = Time.time;
         }
     }
+
+    [Serializable]
+    public class SkillModifier
+    {
+        public SkillType skillType;
+        public float value;
+        public ModifierOperation operation;
+        public string source;
+        public float duration;
+        public float startTime;
+
+        public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
+        {
+            this.skillType = skillType;
+            this.value = value;
+            this.operation = operation;
+            this.source = source;
+            this.duration = duration;
+            this.startTime = Time.time;
+        }
+    }
 }

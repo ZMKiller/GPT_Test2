@@ -28,10 +28,14 @@ namespace HomelessToMillionaire
 
         // Навыки
         private Dictionary<SkillType, int> skills = new Dictionary<SkillType, int>();
+        private Dictionary<SkillType, float> skillExperience = new();
         private int availableSkillPoints = 0;
 
         // Бонусы
         private Dictionary<SkillType, float> skillBonuses = new Dictionary<SkillType, float>();
+
+        // Модификаторы навыков
+        private Dictionary<SkillType, List<SkillModifier>> skillModifiers = new();
 
         // События
         public event Action<SkillType, int> OnSkillUpgraded;
@@ -146,6 +150,14 @@ namespace HomelessToMillionaire
             return availableSkillPoints;
         }
 
+        public int GetTotalSpentSkillPoints()
+        {
+            int total = 0;
+            foreach (var kvp in skills)
+                total += kvp.Value;
+            return total;
+        }
+
         /// <summary>
         /// Добавить очки навыков
         /// </summary>
@@ -203,6 +215,26 @@ namespace HomelessToMillionaire
 
             Debug.Log($"Навык {skillType} улучшен до уровня {skills[skillType]} (стоимость: {cost})");
             return true;
+        }
+
+        /// <summary>
+        /// Добавить опыт навыку
+        /// </summary>
+        public void AddSkillExperience(SkillType skillType, float amount, string reason = "")
+        {
+            if (!skillExperience.ContainsKey(skillType))
+                skillExperience[skillType] = 0f;
+            skillExperience[skillType] += amount;
+        }
+
+        /// <summary>
+        /// Добавить временный модификатор навыка
+        /// </summary>
+        public void AddSkillModifier(SkillModifier modifier)
+        {
+            if (!skillModifiers.ContainsKey(modifier.skillType))
+                skillModifiers[modifier.skillType] = new List<SkillModifier>();
+            skillModifiers[modifier.skillType].Add(modifier);
         }
 
         /// <summary>
@@ -447,7 +479,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             // Добавить очки навыков за повышение уровня
             AddSkillPoints(skillPointsPerLevel);
@@ -463,14 +495,17 @@ namespace HomelessToMillionaire
         public SkillSystemSaveData GetSaveData()
         {
             var skillsData = new Dictionary<string, int>();
+            var levelData = new Dictionary<SkillType, int>();
             foreach (var skill in skills)
             {
                 skillsData[skill.Key.ToString()] = skill.Value;
+                levelData[skill.Key] = skill.Value;
             }
 
             return new SkillSystemSaveData
             {
                 skills = skillsData,
+                skillLevels = levelData,
                 availableSkillPoints = this.availableSkillPoints
             };
         }
@@ -480,19 +515,30 @@ namespace HomelessToMillionaire
         /// </summary>
         public void LoadData(SkillSystemSaveData data)
         {
-            if (data?.skills != null)
+            if (data != null)
             {
-                foreach (var skillData in data.skills)
+                if (data.skillLevels != null && data.skillLevels.Count > 0)
                 {
-                    if (Enum.TryParse<SkillType>(skillData.Key, out SkillType skillType))
+                    foreach (var kvp in data.skillLevels)
                     {
-                        skills[skillType] = skillData.Value;
-                        RecalculateSkillBonus(skillType);
+                        skills[kvp.Key] = kvp.Value;
+                        RecalculateSkillBonus(kvp.Key);
                     }
                 }
+                else if (data.skills != null)
+                {
+                    foreach (var skillData in data.skills)
+                    {
+                        if (Enum.TryParse<SkillType>(skillData.Key, out SkillType skillType))
+                        {
+                            skills[skillType] = skillData.Value;
+                            RecalculateSkillBonus(skillType);
+                        }
+                    }
+                }
+                availableSkillPoints = data.availableSkillPoints;
             }
 
-            availableSkillPoints = data?.availableSkillPoints ?? 0;
             OnSkillPointsChanged?.Invoke(availableSkillPoints);
         }
 
@@ -554,25 +600,25 @@ namespace HomelessToMillionaire
         #endregion
     }
 
-    /// <summary>
-    /// Данные событий навыков
-    /// </summary>
-    [System.Serializable]
-    public class SkillUpgradeEventData
+
+    [Serializable]
+    public class SkillModifier
     {
         public SkillType skillType;
-        public int newLevel;
-        public int pointsSpent;
-        public DateTime timestamp = DateTime.Now;
-    }
+        public float value;
+        public ModifierOperation operation;
+        public string source;
+        public float duration;
+        public float startTime;
 
-    /// <summary>
-    /// Данные системы навыков для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class SkillSystemSaveData
-    {
-        public Dictionary<string, int> skills = new Dictionary<string, int>();
-        public int availableSkillPoints = 0;
+        public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
+        {
+            this.skillType = skillType;
+            this.value = value;
+            this.operation = operation;
+            this.source = source;
+            this.duration = duration;
+            this.startTime = Time.time;
+        }
     }
 }

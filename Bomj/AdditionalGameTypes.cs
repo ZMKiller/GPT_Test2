@@ -109,24 +109,32 @@ namespace HomelessToMillionaire
         public string jobType;
         public double payment;
         public long completionTime;
+
+        public CompletedJobData() { }
     }
 
     [Serializable]
-
     public class CompletedCourseData
     {
-        public EducationType type;
+        // legacy field names expected by other scripts
+        public string educationType;
         public string title;
         public double cost;
         public long completionTime;
+        public CompletedCourseData() { }
+
     }
 
     [Serializable]
     public class DegreeData
     {
         public string name;
-        public EducationType type;
-        public long obtainedTime;
+
+        // fields referenced in EducationSystem
+        public string educationType;
+        public long dateObtained;
+        public string institution;
+        public DegreeData() { }
     }
 
     [Serializable]
@@ -136,6 +144,8 @@ namespace HomelessToMillionaire
         public string name;
         public string category;
         public long purchaseTime;
+
+        public PurchasedItemData() { }
     }
 
 }

@@ -80,10 +80,7 @@ namespace HomelessToMillionaire
             }
 
             // Подписка на события
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnTimeOfDayChanged += OnTimeOfDayChanged;
-            }
+            GameManager.OnTimeOfDayChanged += OnTimeOfDayChanged;
 
             // Применение эффектов текущей локации
             ApplyLocationEffects();
@@ -110,10 +107,7 @@ namespace HomelessToMillionaire
         private void OnDestroy()
         {
             // Отписка от событий
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnTimeOfDayChanged -= OnTimeOfDayChanged;
-            }
+            GameManager.OnTimeOfDayChanged -= OnTimeOfDayChanged;
         }
 
         #endregion

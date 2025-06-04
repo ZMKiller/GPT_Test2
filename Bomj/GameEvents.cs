@@ -92,8 +92,11 @@ namespace HomelessToMillionaire
         public int newLevel;                // Новый уровень
         public float experienceOverflow;    // Избыток опыта
         public int skillPointsGained;       // Полученные очки навыков
-        public double moneyBonus;           // Денежный бонус
+        // older scripts expect the field name moneyGained
+        public double moneyGained;
         public List<string> unlockedFeatures; // Разблокированные функции
+
+        public LevelUpData() { }
 
         public LevelUpData(int oldLevel, int newLevel, float expOverflow, int skillPoints, double money)
         {
@@ -101,7 +104,7 @@ namespace HomelessToMillionaire
             this.newLevel = newLevel;
             this.experienceOverflow = expOverflow;
             this.skillPointsGained = skillPoints;
-            this.moneyBonus = money;
+            this.moneyGained = money;
             this.unlockedFeatures = new List<string>();
         }
     }
@@ -116,6 +119,7 @@ namespace HomelessToMillionaire
         public int oldLevel;                // Старый уровень
         public int newLevel;                // Новый уровень
         public int pointsSpent;             // Потраченные очки
+        public SkillUpgradeEventData() { }
 
         public SkillUpgradeEventData(SkillType skill, int oldLevel, int newLevel, int points)
         {
@@ -139,6 +143,7 @@ namespace HomelessToMillionaire
         public int experienceGained;        // Полученный опыт
         public bool wasSuccessful;          // Успешно ли завершена
         public TimeSpan workDuration;       // Продолжительность работы
+        public JobEventData() { }
 
         public JobEventData(JobType job, double salary, int exp, bool success, TimeSpan duration)
         {
@@ -163,6 +168,7 @@ namespace HomelessToMillionaire
         public Dictionary<SkillType, int> skillsImproved; // Улучшенные навыки
         public int experienceGained;        // Полученный опыт
         public bool certificateEarned;      // Получен ли сертификат
+        public EducationEventData() { }
 
         public EducationEventData(EducationType education, double cost, int exp, bool certificate)
         {
@@ -185,7 +191,10 @@ namespace HomelessToMillionaire
         public ShopCategory category;       // Категория
         public ItemQuality quality;         // Качество
         public double price;                // Цена
+        // total cost for multiple items
+        public double totalCost;
         public Dictionary<StatType, float> statEffects; // Эффекты на характеристики
+        public ShopEventData() { }
 
         public ShopEventData(string id, string name, ShopCategory cat, ItemQuality qual, double price)
         {
@@ -194,6 +203,7 @@ namespace HomelessToMillionaire
             this.category = cat;
             this.quality = qual;
             this.price = price;
+            this.totalCost = price;
             this.statEffects = new Dictionary<StatType, float>();
         }
     }

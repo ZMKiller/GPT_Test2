@@ -695,6 +695,8 @@ namespace HomelessToMillionaire
     public class LevelSystemSaveData : BaseSaveData
     {
         public int prestigeLevel = 0;
+        // timestamp of last level-up for legacy features
+        public long lastLevelUpTime = 0;
 
         public override bool IsValid()
         {
@@ -706,6 +708,7 @@ namespace HomelessToMillionaire
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
             prestigeLevel = 0;
+            lastLevelUpTime = DateTime.MinValue.ToBinary();
         }
     }
 

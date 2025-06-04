@@ -128,10 +128,7 @@ namespace HomelessToMillionaire
         private void SubscribeToEvents()
         {
             // Подписка на события паузы игры
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
-            }
+            GameManager.OnGameStateChanged += OnGameStateChanged;
         }
 
         /// <summary>
@@ -139,10 +136,7 @@ namespace HomelessToMillionaire
         /// </summary>
         private void UnsubscribeFromEvents()
         {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-            }
+            GameManager.OnGameStateChanged -= OnGameStateChanged;
         }
 
         #endregion

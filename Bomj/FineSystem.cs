@@ -44,7 +44,7 @@ namespace HomelessToMillionaire
         private Dictionary<ViolationType, int> violationHistory = new Dictionary<ViolationType, int>();
         private Dictionary<ViolationType, float> lastViolationTime = new Dictionary<ViolationType, float>();
         private bool isArrestWarning = false;
-        private float arrestWarningTime = 0f;
+        private float arrestWarningStartTime = 0f;
 
         // Компоненты
         private PlayerStats playerStats;
@@ -131,7 +131,7 @@ namespace HomelessToMillionaire
         private void UpdateFineSystem()
         {
             // Обновить статус предупреждения об аресте
-            if (isArrestWarning && Time.time - arrestWarningTime > this.arrestWarningTime)
+            if (isArrestWarning && Time.time - arrestWarningStartTime > this.arrestWarningTime)
             {
                 // Предупреждение истекло - угроза ареста
                 OnArrestImminent?.Invoke();
@@ -741,7 +741,7 @@ namespace HomelessToMillionaire
         private void IssueArrestWarning()
         {
             isArrestWarning = true;
-            arrestWarningTime = Time.time;
+            arrestWarningStartTime = Time.time;
 
             OnArrestWarningIssued?.Invoke();
 
@@ -871,7 +871,7 @@ namespace HomelessToMillionaire
                 violationHistory = new Dictionary<ViolationType, int>(violationHistory),
                 lastViolationTime = new Dictionary<ViolationType, float>(lastViolationTime),
                 isArrestWarning = isArrestWarning,
-                arrestWarningTime = arrestWarningTime
+                arrestWarningTime = arrestWarningStartTime
             };
         }
 
@@ -885,7 +885,7 @@ namespace HomelessToMillionaire
             violationHistory = data.violationHistory ?? new Dictionary<ViolationType, int>();
             lastViolationTime = data.lastViolationTime ?? new Dictionary<ViolationType, float>();
             isArrestWarning = data.isArrestWarning;
-            arrestWarningTime = data.arrestWarningTime;
+            arrestWarningStartTime = data.arrestWarningTime;
 
             if (showDebugInfo)
             {

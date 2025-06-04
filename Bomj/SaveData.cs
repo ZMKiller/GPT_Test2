@@ -270,6 +270,9 @@ namespace HomelessToMillionaire
         public string version = "1.0.0";
         public long saveDate = 0;
         public string checksum = "";
+        public string saveName = "";
+        public DateTime createdDate = DateTime.Now;
+        public string gameVersion = "";
 
         [Header("Состояние игры")]
         public float gameTime = 0f;
@@ -301,6 +304,9 @@ namespace HomelessToMillionaire
             version = SaveValidation.GetCurrentSaveVersion();
             saveDate = DateTime.Now.ToBinary();
             checksum = "";
+            saveName = string.Empty;
+            createdDate = DateTime.Now;
+            gameVersion = version;
             gameTime = 0f;
             difficultyMultiplier = 1f;
             timeOfDay = TimeOfDay.Day;
@@ -397,6 +403,7 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class SaveSlotInfo
     {
+        public int slotIndex;
         public string saveName;
         public int level;
         public float money;
@@ -546,6 +553,8 @@ namespace HomelessToMillionaire
     public class SkillSystemSaveData : BaseSaveData
     {
         public Dictionary<SkillType, int> skillLevels = new Dictionary<SkillType, int>();
+        // Legacy field for older saves
+        public Dictionary<string, int> skills = new Dictionary<string, int>();
         public int availableSkillPoints = 0;
 
         public override bool IsValid()
@@ -568,7 +577,7 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class ShopSystemSaveData : BaseSaveData
     {
-        public List<string> purchasedItems = new List<string>();
+        public List<PurchasedItemData> purchasedItems = new List<PurchasedItemData>();
 
         public override bool IsValid()
         {
@@ -579,7 +588,7 @@ namespace HomelessToMillionaire
         {
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
-            purchasedItems = new List<string>();
+            purchasedItems = new List<PurchasedItemData>();
         }
     }
 
@@ -589,12 +598,19 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class JobSystemSaveData : BaseSaveData
     {
+        // Legacy fields for compatibility
+        public string currentJobTitle = string.Empty;
+        public bool isWorking = false;
+        public float workTimeRemaining = 0f;
+        public int jobsCompletedToday = 0;
+        public long lastWorkDay = 0;
+        public List<CompletedJobData> completedJobs = new List<CompletedJobData>();
+
+        // Newer fields
         public JobType? currentJobType;
         public float currentJobProgress = 0f;
         public DateTime currentJobStartTime;
-        public int jobsCompletedToday = 0;
         public DateTime lastJobDate;
-        public List<JobType> completedJobs = new List<JobType>();
         public Dictionary<JobType, int> jobCompletionCounts = new Dictionary<JobType, int>();
 
         public override bool IsValid()
@@ -609,12 +625,17 @@ namespace HomelessToMillionaire
         {
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
+            currentJobTitle = string.Empty;
+            isWorking = false;
+            workTimeRemaining = 0f;
+            jobsCompletedToday = 0;
+            lastWorkDay = DateTime.MinValue.ToBinary();
+            completedJobs = new List<CompletedJobData>();
+
             currentJobType = null;
             currentJobProgress = 0f;
             currentJobStartTime = DateTime.MinValue;
-            jobsCompletedToday = 0;
             lastJobDate = DateTime.MinValue;
-            completedJobs = new List<JobType>();
             jobCompletionCounts = new Dictionary<JobType, int>();
         }
     }
@@ -625,12 +646,19 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class EducationSystemSaveData : BaseSaveData
     {
+        // Legacy fields for backward compatibility
+        public string currentCourseTitle = string.Empty;
+        public bool isStudying = false;
+        public float studyTimeRemaining = 0f;
+        public long lastStudyDay = 0;
+
         public EducationType? currentCourseType;
         public float currentCourseProgress = 0f;
         public DateTime currentCourseStartTime;
         public int coursesCompletedToday = 0;
         public DateTime lastCourseDate;
         public List<EducationType> completedCourses = new List<EducationType>();
+        public List<DegreeData> obtainedDegrees = new List<DegreeData>();
         public List<string> earnedCertificates = new List<string>();
 
         public override bool IsValid()
@@ -645,12 +673,17 @@ namespace HomelessToMillionaire
         {
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
+            currentCourseTitle = string.Empty;
+            isStudying = false;
+            studyTimeRemaining = 0f;
+            lastStudyDay = DateTime.MinValue.ToBinary();
             currentCourseType = null;
             currentCourseProgress = 0f;
             currentCourseStartTime = DateTime.MinValue;
             coursesCompletedToday = 0;
             lastCourseDate = DateTime.MinValue;
             completedCourses = new List<EducationType>();
+            obtainedDegrees = new List<DegreeData>();
             earnedCertificates = new List<string>();
         }
     }

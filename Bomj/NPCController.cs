@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using Random = UnityEngine.Random;
 
 namespace HomelessToMillionaire
 {
@@ -485,7 +486,7 @@ namespace HomelessToMillionaire
             {
                 // Радиус обнаружения игрока
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawWireCircle(transform.position, npcData.DetectionRadius);
+                Gizmos.DrawWireSphere(transform.position, npcData.DetectionRadius);
                 
                 // Направление движения
                 Gizmos.color = Color.blue;

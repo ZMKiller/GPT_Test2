@@ -1339,12 +1339,12 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены локации
         /// </summary>
-        private void OnLocationChanged(Location oldLocation, Location newLocation)
+        private void OnLocationChanged(LocationType oldLocation, LocationType newLocation)
         {
             // Проверить локационные события для новой локации
-            if (locationEvents.ContainsKey(newLocation))
+            if (locationEvents.ContainsKey((Location)newLocation))
             {
-                var events = locationEvents[newLocation];
+                var events = locationEvents[(Location)newLocation];
                 foreach (var locationEvent in events)
                 {
                     if (!locationEvent.isCompleted && 

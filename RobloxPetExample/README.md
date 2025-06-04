@@ -24,6 +24,9 @@ This folder contains a simple example of a pet inventory system for Roblox. The 
 
 - When the server starts, `ServerInit.lua` creates the remote events and listens for inventory actions from clients.
 - When a player joins, `PetInventoryModule` loads their saved data (inventory, equipped pet, favorites). When they leave, the data is saved.
+
+- If a player has no saved data, they begin with three starter pets: **Cat**, **Dog**, and **Fox**.
+
 - The client requests its inventory via the `RequestInventory` RemoteFunction and renders buttons for each pet. Clicking a pet button equips or unequips it. Right-clicking toggles the favorite status.
 
 This is a minimal setup intended for learning purposes. In a real game you might expand it with animations, more sophisticated data handling and additional gameplay logic.

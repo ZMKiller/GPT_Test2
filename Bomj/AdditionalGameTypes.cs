@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace HomelessToMillionaire
+
 {
     // Extra enums missing from the original scripts
     public enum EducationCategory
@@ -36,6 +38,7 @@ namespace HomelessToMillionaire
         BottomRight
     }
 
+
     public enum ActivityType
     {
         Work,
@@ -43,6 +46,7 @@ namespace HomelessToMillionaire
         Rest,
         Exercise
     }
+
 
     public enum LoadingState
     {

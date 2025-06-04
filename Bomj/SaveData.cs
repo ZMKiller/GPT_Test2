@@ -769,6 +769,7 @@ namespace HomelessToMillionaire
         public TimePeriod currentTimePeriod = TimePeriod.Day;
         public Season currentSeason = Season.Spring;
         public TimeSpeed currentTimeSpeed = TimeSpeed.Normal;
+
         public bool enableTimeFlow = true;
         public float realSecondsPerGameHour = 60f;
         public float timeMultiplier = 1f;

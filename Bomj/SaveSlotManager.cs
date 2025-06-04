@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-// using Newtonsoft.Json; // Заменено на Unity JsonUtility
+using Newtonsoft.Json;
 
 namespace HomelessToMillionaire
 {

@@ -675,13 +675,4 @@ namespace HomelessToMillionaire
     /// <summary>
     /// Данные TimeOfDayManager для сохранения
     /// </summary>
-    [System.Serializable]
-    public class TimeOfDayManagerSaveData
-    {
-        public long currentDateTime;
-        public Season currentSeason;
-        public TimeSpeed timeSpeed;
-        public bool enableTimeFlow;
-        public float realSecondsPerGameHour;
-    }
 }

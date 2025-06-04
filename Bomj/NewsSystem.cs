@@ -1212,15 +1212,7 @@ namespace HomelessToMillionaire
         Weather             // Погодный
     }
 
-    /// <summary>
-    /// Влияние новости
-    /// </summary>
-    public enum NewsImpact
-    {
-        Positive,           // Положительное
-        Neutral,            // Нейтральное
-        Negative            // Отрицательное
-    }
+
 
     /// <summary>
     /// Данные NewsSystem для сохранения

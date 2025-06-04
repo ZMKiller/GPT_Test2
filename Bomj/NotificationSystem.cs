@@ -27,8 +27,8 @@ namespace HomelessToMillionaire
         [Header("Анимация")]
         [SerializeField] private float slideInDuration = 0.5f;      // Время появления
         [SerializeField] private float slideOutDuration = 0.3f;     // Время исчезновения
-        [SerializeField] private AnimationCurve slideInCurve = AnimationCurve.EaseOut(0, 0, 1, 1);
-        [SerializeField] private AnimationCurve slideOutCurve = AnimationCurve.EaseIn(0, 0, 1, 1);
+        [SerializeField] private AnimationCurve slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        [SerializeField] private AnimationCurve slideOutCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         [Header("Стили уведомлений")]
         [SerializeField] private NotificationStyle[] notificationStyles;

@@ -14,12 +14,8 @@ namespace HomelessToMillionaire
         SelfStudy
     }
 
-    public enum NotificationStyle
-    {
-        Standard,
-        Popup,
-        Toast
-    }
+
+
 
     public enum NotificationPosition
     {
@@ -104,4 +100,23 @@ namespace HomelessToMillionaire
         public List<EducationCourse> availableCourses = new List<EducationCourse>();
         public Dictionary<EducationType, int> completedLevels = new Dictionary<EducationType, int>();
     }
+
+
+    [Serializable]
+    public class CompletedJobData
+    {
+        public string title;
+        public string jobType;
+        public double payment;
+        public long completionTime;
+    }
+
+    [Serializable]
+    public class PurchasedItemData
+    {
+        public string name;
+        public string category;
+        public long purchaseTime;
+    }
+
 }

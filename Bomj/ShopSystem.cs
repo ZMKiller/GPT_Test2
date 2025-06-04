@@ -770,9 +770,9 @@ namespace HomelessToMillionaire
         public bool isConsumable = true;
         public int maxStack = 1;
 
-        public ShopItem(string id, string name, ShopCategory category, ItemQuality quality, double price, 
+        public ShopItem(string id, string name, ShopCategory category, ItemQuality quality, double price,
                        int levelRequirement, string description, Dictionary<StatType, float> statEffects = null,
-                       Dictionary<string, float> permanentEffects = null, 
+                       Dictionary<string, float> permanentEffects = null,
                        Dictionary<SkillType, int> skillRequirements = null,
                        bool isConsumable = true, int maxStack = 1)
         {
@@ -789,7 +789,21 @@ namespace HomelessToMillionaire
             this.isConsumable = isConsumable;
             this.maxStack = maxStack;
         }
+
+
+        public ShopItem(string name, ShopCategory category, ItemQuality quality, double price,
+                       int levelRequirement, string description, Dictionary<StatType, float> statEffects = null,
+                       Dictionary<string, float> permanentEffects = null,
+                       bool isConsumable = true, int maxStack = 1)
+            : this(Guid.NewGuid().ToString(), name, category, quality, price, levelRequirement,
+                   description, statEffects, permanentEffects, null, isConsumable, maxStack)
+        {
+        }
     }
 
-    
+    /// <summary>
+    /// Данные системы магазина для сохранения
+    /// </summary>
+    [System.Serializable]
+
 }

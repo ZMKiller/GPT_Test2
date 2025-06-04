@@ -134,6 +134,8 @@ namespace HomelessToMillionaire
     {
         public JobType jobType;             // Тип работы
         public double salary;               // Зарплата
+        public double payment;              // Итоговая выплата
+        public int hoursWorked;             // Отработанные часы
         public int experienceGained;        // Полученный опыт
         public bool wasSuccessful;          // Успешно ли завершена
         public TimeSpan workDuration;       // Продолжительность работы
@@ -145,6 +147,8 @@ namespace HomelessToMillionaire
             this.experienceGained = exp;
             this.wasSuccessful = success;
             this.workDuration = duration;
+            this.payment = salary;
+            this.hoursWorked = (int)duration.TotalHours;
         }
     }
 

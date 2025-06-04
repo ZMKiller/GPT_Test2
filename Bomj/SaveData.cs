@@ -570,7 +570,7 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class ShopSystemSaveData : BaseSaveData
     {
-        public List<string> purchasedItems = new List<string>();
+        public List<PurchasedItemData> purchasedItems = new List<PurchasedItemData>();
 
         public override bool IsValid()
         {
@@ -581,7 +581,7 @@ namespace HomelessToMillionaire
         {
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
-            purchasedItems = new List<string>();
+            purchasedItems = new List<PurchasedItemData>();
         }
     }
 
@@ -591,12 +591,19 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class JobSystemSaveData : BaseSaveData
     {
+        // Legacy fields for compatibility
+        public string currentJobTitle = string.Empty;
+        public bool isWorking = false;
+        public float workTimeRemaining = 0f;
+        public int jobsCompletedToday = 0;
+        public long lastWorkDay = 0;
+        public List<CompletedJobData> completedJobs = new List<CompletedJobData>();
+
+        // Newer fields
         public JobType? currentJobType;
         public float currentJobProgress = 0f;
         public DateTime currentJobStartTime;
-        public int jobsCompletedToday = 0;
         public DateTime lastJobDate;
-        public List<JobType> completedJobs = new List<JobType>();
         public Dictionary<JobType, int> jobCompletionCounts = new Dictionary<JobType, int>();
 
         public override bool IsValid()
@@ -611,12 +618,17 @@ namespace HomelessToMillionaire
         {
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
+            currentJobTitle = string.Empty;
+            isWorking = false;
+            workTimeRemaining = 0f;
+            jobsCompletedToday = 0;
+            lastWorkDay = DateTime.MinValue.ToBinary();
+            completedJobs = new List<CompletedJobData>();
+
             currentJobType = null;
             currentJobProgress = 0f;
             currentJobStartTime = DateTime.MinValue;
-            jobsCompletedToday = 0;
             lastJobDate = DateTime.MinValue;
-            completedJobs = new List<JobType>();
             jobCompletionCounts = new Dictionary<JobType, int>();
         }
     }

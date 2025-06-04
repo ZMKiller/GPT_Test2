@@ -129,6 +129,9 @@ namespace HomelessToMillionaire
             }
         }
 
+        // Convenience wrappers used by older scripts
+        public void AddHealth(float amount) => ChangeHealth(amount);
+
         /// <summary>
         /// Изменить голод
         /// </summary>
@@ -150,6 +153,8 @@ namespace HomelessToMillionaire
             }
         }
 
+        public void AddHunger(float amount) => ChangeHunger(amount);
+
         /// <summary>
         /// Изменить настроение
         /// </summary>
@@ -164,6 +169,8 @@ namespace HomelessToMillionaire
                 GameEvents.TriggerStatChanged(StatType.Mood, oldValue, currentMood, maxMood);
             }
         }
+
+        public void AddMood(float amount) => ChangeMood(amount);
 
         /// <summary>
         /// Изменить количество денег

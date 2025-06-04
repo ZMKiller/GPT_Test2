@@ -510,6 +510,7 @@ namespace HomelessToMillionaire
             if (data != null)
             {
                 if (data.skillLevels != null && data.skillLevels.Count > 0)
+
                 {
                     foreach (var kvp in data.skillLevels)
                     {
@@ -528,6 +529,7 @@ namespace HomelessToMillionaire
                         }
                     }
                 }
+
                 availableSkillPoints = data.availableSkillPoints;
             }
 

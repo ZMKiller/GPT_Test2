@@ -199,11 +199,18 @@ namespace HomelessToMillionaire
     /// </summary>
     public enum SkillType
     {
-        Charisma,       // Харизма - влияет на заработок от людей
-        Education,      // Образование - открывает работы и курсы
-        Fitness,        // Физическая форма - влияет на здоровье
-        Luck,           // Удача - случайные бонусы и события
-        Business        // Деловые навыки - бизнес и высокие доходы
+        None,
+        Charisma,
+        Education,
+        Fitness,
+        Luck,
+        Business,
+        Computer,
+        Stealth,
+        Streetwise,
+        Physical_Fitness,
+        Intelligence,
+        Business_Skills
     }
 
     /// <summary>
@@ -611,7 +618,17 @@ namespace HomelessToMillionaire
         Hospital,          // Больница
         Fine,              // Штраф
         Witness,           // Свидетели
-        Revenge            // Месть
+        Revenge,
+        ReputationGain,
+        ReputationLoss,
+        ItemFound,
+        Hospitalization,
+        Pursuit,
+        WitnessReport,
+        RandomHelp,
+        Retaliation,
+        JobOffer,
+        MedicalAssistance
     }
 
     /// <summary>

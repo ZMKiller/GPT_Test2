@@ -691,6 +691,8 @@ namespace HomelessToMillionaire
         public ModifierOperation operation; // Операция применения
         public string source;               // Источник модификатора
         public int priority;                // Приоритет применения
+        public float duration;              // Длительность действия
+        public float startTime;             // Время начала
 
         public StatModifier(StatType statType, float value, ModifierOperation operation, string source, int priority = 0)
         {
@@ -699,6 +701,14 @@ namespace HomelessToMillionaire
             this.operation = operation;
             this.source = source;
             this.priority = priority;
+            this.duration = 0f;
+            this.startTime = Time.time;
+        }
+
+        public StatModifier(StatType statType, float value, ModifierOperation operation, string source, float duration)
+            : this(statType, value, operation, source, 0)
+        {
+            this.duration = duration;
         }
 
         public override bool Equals(object obj)

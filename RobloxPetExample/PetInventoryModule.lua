@@ -7,9 +7,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PetDataModule = require(ReplicatedStorage:WaitForChild("PetDataModule"))
 
 local DEFAULT_PETS = {}
+
+local added = 0
 for petName in pairs(PetDataModule.Pets) do
-    if #DEFAULT_PETS >= 3 then break end
-    table.insert(DEFAULT_PETS, petName)
+    if added >= 3 then break end
+    DEFAULT_PETS[petName] = 1
+    added += 1
 end
 
 
@@ -18,18 +21,43 @@ local inventoryStore = DataStoreService:GetDataStore("PetInventory")
 -- Player data cache
 local playerData = {}
 
+
+local function ensureFormat(data)
+    if type(data.Inventory) == "table" then
+        -- convert array inventory to count table if necessary
+        if #data.Inventory > 0 then
+            local counts = {}
+            for _, name in ipairs(data.Inventory) do
+                counts[name] = (counts[name] or 0) + 1
+            end
+            data.Inventory = counts
+        end
+    else
+        data.Inventory = table.clone(DEFAULT_PETS)
+    end
+
+    if type(data.EquippedPets) ~= "table" then
+        data.EquippedPets = {}
+    end
+    if type(data.Favorites) ~= "table" then
+        data.Favorites = {}
+    end
+end
+
+
 local function loadData(player)
     local success, data = pcall(function()
         return inventoryStore:GetAsync(player.UserId)
     end)
     if success and type(data) == "table" then
+
+        ensureFormat(data)
         playerData[player.UserId] = data
     else
         playerData[player.UserId] = {
-
             Inventory = table.clone(DEFAULT_PETS),
+            EquippedPets = {},
 
-            EquippedPet = nil,
             Favorites = {}
         }
     end
@@ -44,22 +72,33 @@ local function saveData(player)
 end
 
 function PetInventoryModule.AddPet(player, petName)
-    local data = playerData[player.UserId]
-    table.insert(data.Inventory, petName)
+
+    local data = PetInventoryModule.GetPlayerData(player)
+    data.Inventory[petName] = (data.Inventory[petName] or 0) + 1
 end
 
 function PetInventoryModule.EquipPet(player, petName)
-    local data = playerData[player.UserId]
-    data.EquippedPet = petName
+    local data = PetInventoryModule.GetPlayerData(player)
+    if (data.Inventory[petName] or 0) <= 0 then return end
+    if #data.EquippedPets >= 5 then return end
+    table.insert(data.EquippedPets, petName)
+    data.Inventory[petName] = data.Inventory[petName] - 1
+    if data.Inventory[petName] <= 0 then
+        data.Inventory[petName] = nil
+    end
 end
 
-function PetInventoryModule.UnequipPet(player)
-    local data = playerData[player.UserId]
-    data.EquippedPet = nil
+function PetInventoryModule.UnequipPet(player, slotIndex)
+    local data = PetInventoryModule.GetPlayerData(player)
+    local petName = data.EquippedPets[slotIndex]
+    if not petName then return end
+    table.remove(data.EquippedPets, slotIndex)
+    data.Inventory[petName] = (data.Inventory[petName] or 0) + 1
 end
 
 function PetInventoryModule.ToggleFavorite(player, petName)
-    local data = playerData[player.UserId]
+    local data = PetInventoryModule.GetPlayerData(player)
+
     if data.Favorites[petName] then
         data.Favorites[petName] = nil
     else
@@ -74,11 +113,15 @@ function PetInventoryModule.GetPlayerData(player)
     if not data then
         data = {
             Inventory = table.clone(DEFAULT_PETS),
-            EquippedPet = nil,
+
+            EquippedPets = {},
+
             Favorites = {}
         }
         playerData[player.UserId] = data
     end
+
+    ensureFormat(data)
     return data
 
 end

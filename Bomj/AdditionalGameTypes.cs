@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace HomelessToMillionaire
+
 {
     // Extra enums missing from the original scripts
     public enum EducationCategory
@@ -11,6 +13,7 @@ namespace HomelessToMillionaire
         University,
         SelfStudy
     }
+
 
 
     public enum NotificationPosition
@@ -30,6 +33,7 @@ namespace HomelessToMillionaire
         BottomRight
     }
 
+
     public enum ActivityType
     {
         Work,
@@ -37,6 +41,7 @@ namespace HomelessToMillionaire
         Rest,
         Exercise
     }
+
 
     public enum LoadingState
     {
@@ -74,6 +79,7 @@ namespace HomelessToMillionaire
     [Serializable]
     public class SettingsOption
     {
+
         public string optionName;
         public object value;
         public Action<object> OnValueChanged;
@@ -95,6 +101,7 @@ namespace HomelessToMillionaire
         public Dictionary<EducationType, int> completedLevels = new Dictionary<EducationType, int>();
     }
 
+
     [Serializable]
     public class CompletedJobData
     {
@@ -105,6 +112,7 @@ namespace HomelessToMillionaire
     }
 
     [Serializable]
+
     public class CompletedCourseData
     {
         public EducationType type;
@@ -122,10 +130,12 @@ namespace HomelessToMillionaire
     }
 
     [Serializable]
+
     public class PurchasedItemData
     {
         public string name;
         public string category;
         public long purchaseTime;
     }
+
 }

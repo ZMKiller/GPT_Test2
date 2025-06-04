@@ -507,7 +507,7 @@ namespace HomelessToMillionaire
 
             // Заполнить данные
             int currentLevel = skillSystem.GetSkillLevel(skillType);
-            int upgradeCost = skillSystem.GetSkillUpgradeCost(currentLevel);
+            int upgradeCost = skillSystem.GetSkillUpgradeCost(skillType);
             bool canUpgrade = skillSystem.CanUpgradeSkill(skillType);
 
             if (nameText != null)
@@ -767,7 +767,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Создать элемент работы
         /// </summary>
-        private void CreateJobItem(JobData job)
+        private void CreateJobItem(Job job)
         {
             GameObject jobItem = Instantiate(jobItemPrefab, jobsContainer);
             jobItems.Add(jobItem);
@@ -779,13 +779,13 @@ namespace HomelessToMillionaire
             var requirementsText = jobItem.transform.Find("RequirementsText")?.GetComponent<TextMeshProUGUI>();
 
             // Заполнить данные
-            bool canStart = jobSystem.CanStartJob(job.jobType);
+            bool canStart = jobSystem.CanStartJob(job);
 
             if (nameText != null)
                 nameText.text = GetJobDisplayName(job.jobType);
 
             if (salaryText != null)
-                salaryText.text = $"Зарплата: ${job.baseSalary:F0}/час";
+                salaryText.text = $"Зарплата: ${job.payment:F0}/час";
 
             if (requirementsText != null)
                 requirementsText.text = GetJobRequirementsText(job);
@@ -818,12 +818,12 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Получить текст требований работы
         /// </summary>
-        private string GetJobRequirementsText(JobData job)
+        private string GetJobRequirementsText(Job job)
         {
             var requirements = new List<string>();
 
-            if (job.minLevel > 1)
-                requirements.Add($"Уровень: {job.minLevel}");
+            if (job.levelRequirement > 1)
+                requirements.Add($"Уровень: {job.levelRequirement}");
 
             if (job.skillRequirements != null)
             {
@@ -917,7 +917,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Создать элемент курса
         /// </summary>
-        private void CreateCourseItem(EducationData course)
+        private void CreateCourseItem(EducationCourse course)
         {
             GameObject courseItem = Instantiate(courseItemPrefab, coursesContainer);
             courseItems.Add(courseItem);
@@ -930,7 +930,7 @@ namespace HomelessToMillionaire
             var rewardText = courseItem.transform.Find("RewardText")?.GetComponent<TextMeshProUGUI>();
 
             // Заполнить данные
-            bool canStart = educationSystem.CanStartCourse(course.educationType);
+            bool canStart = educationSystem.CanStartCourse(course);
 
             if (nameText != null)
                 nameText.text = GetEducationDisplayName(course.educationType);
@@ -970,16 +970,16 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Получить текст требований образования
         /// </summary>
-        private string GetEducationRequirementsText(EducationData course)
+        private string GetEducationRequirementsText(EducationCourse course)
         {
             var requirements = new List<string>();
 
-            if (course.minLevel > 1)
-                requirements.Add($"Уровень: {course.minLevel}");
+            if (course.levelRequirement > 1)
+                requirements.Add($"Уровень: {course.levelRequirement}");
 
-            if (course.skillRequirements != null)
+            if (course.prerequisites != null)
             {
-                foreach (var req in course.skillRequirements)
+                foreach (var req in course.prerequisites)
                 {
                     if (req.Value > 0)
                         requirements.Add($"{GetSkillDisplayName(req.Key)}: {req.Value}");
@@ -992,16 +992,13 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Получить текст наград образования
         /// </summary>
-        private string GetEducationRewardText(EducationData course)
+        private string GetEducationRewardText(EducationCourse course)
         {
             var rewards = new List<string>();
 
-            if (course.experienceReward > 0)
-                rewards.Add($"Опыт: +{course.experienceReward}");
-
-            if (course.skillImprovement != null)
+            if (course.skillRewards != null)
             {
-                foreach (var improvement in course.skillImprovement)
+                foreach (var improvement in course.skillRewards)
                 {
                     if (improvement.Value > 0)
                         rewards.Add($"{GetSkillDisplayName(improvement.Key)}: +{improvement.Value}");
@@ -1198,7 +1195,9 @@ namespace HomelessToMillionaire
         {
             if (shopSystem != null)
             {
-                shopSystem.BuyItem(itemId);
+                var item = shopSystem.GetItemById(itemId);
+                if (item != null)
+                    shopSystem.BuyItem(item);
             }
         }
 
@@ -1209,7 +1208,9 @@ namespace HomelessToMillionaire
         {
             if (jobSystem != null)
             {
-                jobSystem.StartJob(jobType);
+                var job = jobSystem.GetJobsByType(jobType).FirstOrDefault();
+                if (job != null)
+                    jobSystem.StartJob(job);
             }
         }
 
@@ -1231,7 +1232,9 @@ namespace HomelessToMillionaire
         {
             if (educationSystem != null)
             {
-                educationSystem.StartCourse(educationType);
+                var course = educationSystem.GetCoursesByType(educationType).FirstOrDefault();
+                if (course != null)
+                    educationSystem.StartCourse(course);
             }
         }
 
@@ -1296,7 +1299,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик начала работы
         /// </summary>
-        private void OnJobStarted(JobType jobType)
+        private void OnJobStarted(Job job)
         {
             if (currentTab == ProgressionTab.JobCenter)
             {
@@ -1307,7 +1310,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик завершения работы
         /// </summary>
-        private void OnJobCompleted(JobEventData data)
+        private void OnJobCompleted(Job job, JobResult result)
         {
             if (currentTab == ProgressionTab.JobCenter)
             {
@@ -1318,7 +1321,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик начала образования
         /// </summary>
-        private void OnEducationStarted(EducationType educationType)
+        private void OnEducationStarted(EducationCourse course)
         {
             if (currentTab == ProgressionTab.Education)
             {
@@ -1329,7 +1332,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик завершения образования
         /// </summary>
-        private void OnEducationCompleted(EducationEventData data)
+        private void OnEducationCompleted(EducationCourse course, EducationResult result)
         {
             if (currentTab == ProgressionTab.Education)
             {

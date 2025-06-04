@@ -40,6 +40,9 @@ namespace HomelessToMillionaire
         public event Action<int> OnExperienceGained;
         public event Action<int> OnPrestigeUp;
 
+        // Public accessor for other systems
+        public int CurrentLevel => playerStats != null ? playerStats.Level : 0;
+
         #region Unity Methods
 
         private void Awake()
@@ -135,8 +138,8 @@ namespace HomelessToMillionaire
             if (!isInitialized || amount <= 0) return;
 
             int currentLevel = playerStats.Level;
-            int currentExp = playerStats.Experience;
-            int newExp = currentExp + amount;
+            float currentExp = playerStats.Experience;
+            float newExp = currentExp + amount;
 
             playerStats.SetExperience(newExp);
             OnExperienceGained?.Invoke(amount);
@@ -180,7 +183,7 @@ namespace HomelessToMillionaire
             int currentLevel = playerStats.Level;
             if (currentLevel >= maxLevel) return 1f;
 
-            int currentExp = playerStats.Experience;
+            int currentExp = Mathf.FloorToInt(playerStats.Experience);
             int totalExpForCurrentLevel = GetTotalExperienceRequirement(currentLevel);
             int totalExpForNextLevel = GetTotalExperienceRequirement(currentLevel + 1);
             
@@ -198,7 +201,7 @@ namespace HomelessToMillionaire
             int currentLevel = playerStats.Level;
             if (currentLevel >= maxLevel) return 0;
 
-            int currentExp = playerStats.Experience;
+            int currentExp = Mathf.FloorToInt(playerStats.Experience);
             int requiredExp = GetTotalExperienceRequirement(currentLevel + 1);
             
             return Mathf.Max(0, requiredExp - currentExp);
@@ -263,7 +266,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Проверка повышения уровня
         /// </summary>
-        private void CheckLevelUp(int oldLevel, int currentExp)
+        private void CheckLevelUp(int oldLevel, float currentExp)
         {
             int newLevel = CalculateLevelFromExperience(currentExp);
             
@@ -276,7 +279,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Вычислить уровень по опыту
         /// </summary>
-        private int CalculateLevelFromExperience(int experience)
+        private int CalculateLevelFromExperience(float experience)
         {
             for (int level = 1; level <= maxLevel; level++)
             {
@@ -323,7 +326,7 @@ namespace HomelessToMillionaire
                 newLevel = newLevel,
                 skillPointsGained = totalSkillPoints,
                 moneyGained = totalMoney,
-                unlockedFeatures = GetUnlockedFeatures(newLevel)
+                unlockedFeatures = new System.Collections.Generic.List<string>(GetUnlockedFeatures(newLevel))
             };
             
             // Визуальные эффекты
@@ -333,8 +336,8 @@ namespace HomelessToMillionaire
             OnLevelUp?.Invoke(levelUpData);
             GameEvents.TriggerLevelUp(levelUpData);
             
-            Debug.Log($"Повышение уровня! {oldLevel} → {newLevel} " +
-                     $"(+{totalSkillPoints} очков навыков, +{GameUtils.FormatMoney(totalMoney)})");
+                Debug.Log($"Повышение уровня! {oldLevel} → {newLevel} " +
+                       $"(+{totalSkillPoints} очков навыков, +{GameUtils.FormatMoney((float)totalMoney)})");
         }
 
         /// <summary>
@@ -624,59 +627,4 @@ namespace HomelessToMillionaire
         #endregion
     }
 
-    /// <summary>
-    /// Данные о повышении уровня
-    /// </summary>
-    [System.Serializable]
-    public class LevelUpData
-    {
-        public int oldLevel;
-        public int newLevel;
-        public int skillPointsGained;
-        public double moneyGained;
-        public string[] unlockedFeatures;
-        
-        public DateTime timestamp = DateTime.Now;
-    }
-
-    /// <summary>
-    /// Данные системы уровней для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class LevelSystemSaveData
-    {
-        public int prestigeLevel = 0;
-        public long lastLevelUpTime = 0;
-    }
-
-    /// <summary>
-    /// Данные событий для новых систем
-    /// </summary>
-    [System.Serializable]
-    public class JobEventData
-    {
-        public JobType jobType;
-        public double payment;
-        public int hoursWorked;
-        public DateTime timestamp = DateTime.Now;
-    }
-
-    [System.Serializable]
-    public class EducationEventData
-    {
-        public EducationType educationType;
-        public double cost;
-        public int skillPointsGained;
-        public DateTime completionTime = DateTime.Now;
-    }
-
-    [System.Serializable]
-    public class ShopEventData
-    {
-        public ShopCategory category;
-        public string itemName;
-        public double totalCost;
-        public ItemQuality quality;
-        public DateTime purchaseTime = DateTime.Now;
-    }
 }

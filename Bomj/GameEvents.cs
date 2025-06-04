@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HomelessToMillionaire
@@ -91,8 +92,13 @@ namespace HomelessToMillionaire
         public int newLevel;                // Новый уровень
         public float experienceOverflow;    // Избыток опыта
         public int skillPointsGained;       // Полученные очки навыков
-        public double moneyBonus;           // Денежный бонус
+        // older scripts expect the field name moneyGained
+        public double moneyGained;
+        // for backwards compatibility
+        public double moneyBonus => moneyGained;
         public List<string> unlockedFeatures; // Разблокированные функции
+
+        public LevelUpData() { }
 
         public LevelUpData(int oldLevel, int newLevel, float expOverflow, int skillPoints, double money)
         {
@@ -100,7 +106,7 @@ namespace HomelessToMillionaire
             this.newLevel = newLevel;
             this.experienceOverflow = expOverflow;
             this.skillPointsGained = skillPoints;
-            this.moneyBonus = money;
+            this.moneyGained = money;
             this.unlockedFeatures = new List<string>();
         }
     }
@@ -115,6 +121,7 @@ namespace HomelessToMillionaire
         public int oldLevel;                // Старый уровень
         public int newLevel;                // Новый уровень
         public int pointsSpent;             // Потраченные очки
+        public SkillUpgradeEventData() { }
 
         public SkillUpgradeEventData(SkillType skill, int oldLevel, int newLevel, int points)
         {
@@ -133,9 +140,12 @@ namespace HomelessToMillionaire
     {
         public JobType jobType;             // Тип работы
         public double salary;               // Зарплата
+        public double payment;              // Итоговая выплата
+        public int hoursWorked;             // Отработанные часы
         public int experienceGained;        // Полученный опыт
         public bool wasSuccessful;          // Успешно ли завершена
         public TimeSpan workDuration;       // Продолжительность работы
+        public JobEventData() { }
 
         public JobEventData(JobType job, double salary, int exp, bool success, TimeSpan duration)
         {
@@ -144,6 +154,8 @@ namespace HomelessToMillionaire
             this.experienceGained = exp;
             this.wasSuccessful = success;
             this.workDuration = duration;
+            this.payment = salary;
+            this.hoursWorked = (int)duration.TotalHours;
         }
     }
 
@@ -158,14 +170,18 @@ namespace HomelessToMillionaire
         public Dictionary<SkillType, int> skillsImproved; // Улучшенные навыки
         public int experienceGained;        // Полученный опыт
         public bool certificateEarned;      // Получен ли сертификат
+        // for backward compatibility
+        public int skillPointsGained;
+        public EducationEventData() { }
 
-        public EducationEventData(EducationType education, double cost, int exp, bool certificate)
+        public EducationEventData(EducationType education, double cost, int exp, bool certificate, int skillPoints = 0)
         {
             this.educationType = education;
             this.cost = cost;
             this.experienceGained = exp;
             this.certificateEarned = certificate;
             this.skillsImproved = new Dictionary<SkillType, int>();
+            this.skillPointsGained = skillPoints;
         }
     }
 
@@ -180,7 +196,10 @@ namespace HomelessToMillionaire
         public ShopCategory category;       // Категория
         public ItemQuality quality;         // Качество
         public double price;                // Цена
+        // total cost for multiple items
+        public double totalCost;
         public Dictionary<StatType, float> statEffects; // Эффекты на характеристики
+        public ShopEventData() { }
 
         public ShopEventData(string id, string name, ShopCategory cat, ItemQuality qual, double price)
         {
@@ -189,6 +208,7 @@ namespace HomelessToMillionaire
             this.category = cat;
             this.quality = qual;
             this.price = price;
+            this.totalCost = price;
             this.statEffects = new Dictionary<StatType, float>();
         }
     }
@@ -200,7 +220,8 @@ namespace HomelessToMillionaire
     {
         // События характеристик
         public static event Action<StatChangedEventData> OnStatChanged;
-        public static event Action<LevelUpEventData> OnLevelUp;
+        // Deprecated: old level-up event using simple data
+        // public static event Action<LevelUpEventData> OnLevelUp;
         
         // События состояния здоровья
         public static event Action OnLowHealth;
@@ -208,7 +229,8 @@ namespace HomelessToMillionaire
         public static event Action OnPlayerDeath;
         
         // События игрового процесса
-        public static event Action<float> OnMoneyEarned;    // float - количество заработанных денег
+        // Deprecated: old money earned event
+        // public static event Action<float> OnMoneyEarned;    // float - количество заработанных денег
         public static event Action<float> OnFoodConsumed;   // float - количество восстановленного голода
         public static event Action<float> OnRestTaken;      // float - количество восстановленного настроения
         
@@ -275,12 +297,10 @@ namespace HomelessToMillionaire
             OnStatChanged?.Invoke(new StatChangedEventData(statType, oldValue, newValue, maxValue));
         }
 
-        /// <summary>
-        /// Вызвать событие повышения уровня
-        /// </summary>
+        // Legacy overload kept for backward compatibility
         public static void TriggerLevelUp(int oldLevel, int newLevel, float experienceOverflow)
         {
-            OnLevelUp?.Invoke(new LevelUpEventData(oldLevel, newLevel, experienceOverflow));
+            OnLevelUp?.Invoke(new LevelUpData(oldLevel, newLevel, experienceOverflow, 0, 0));
         }
 
         /// <summary>
@@ -307,12 +327,10 @@ namespace HomelessToMillionaire
             OnPlayerDeath?.Invoke();
         }
 
-        /// <summary>
-        /// Вызвать событие заработка денег
-        /// </summary>
+        // Legacy overload kept for backward compatibility
         public static void TriggerMoneyEarned(float amount)
         {
-            OnMoneyEarned?.Invoke(amount);
+            OnMoneyEarned?.Invoke(new MoneyEventData(amount, "legacy"));
         }
 
         /// <summary>

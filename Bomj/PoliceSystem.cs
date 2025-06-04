@@ -65,6 +65,7 @@ namespace HomelessToMillionaire
         public bool IsUnderArrest => isUnderArrest;
         public float TimeUntilWantedDecay => wantedTimer;
         public List<PoliceRecord> CrimeHistory => new List<PoliceRecord>(crimeHistory);
+        public float CurrentActivityLevel => 1f + (int)currentWantedLevel * 0.1f;
 
         #region Unity Methods
 
@@ -916,10 +917,10 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены локации
         /// </summary>
-        private void OnLocationChanged(Location oldLocation, Location newLocation)
+        private void OnLocationChanged(LocationType oldLocation, LocationType newLocation)
         {
             // В некоторых локациях увеличивается шанс встречи с полицией
-            if (IsWanted && IsHighSecurityLocation(newLocation))
+            if (IsWanted && IsHighSecurityLocation((Location)newLocation))
             {
                 if (showDebugInfo)
                 {
@@ -1009,20 +1010,6 @@ namespace HomelessToMillionaire
         public bool resolved;            // Решено ли дело
         public double fine;              // Сумма штрафа
         public int jailTime;             // Время в тюрьме
-    }
-
-    /// <summary>
-    /// Типы преступлений
-    /// </summary>
-    public enum CrimeType
-    {
-        Fighting,           // Драка
-        IllegalWeapon,      // Незаконное оружие
-        Theft,              // Кража
-        Assault,            // Нападение
-        Vandalism,          // Вандализм
-        ResistingArrest,    // Сопротивление аресту
-        BriberyAttempt      // Попытка дачи взятки
     }
 
     /// <summary>

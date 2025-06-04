@@ -14,12 +14,14 @@ namespace HomelessToMillionaire
         [SerializeField] private float maxHealth = 100f;        // Максимальное здоровье
         [SerializeField] private float maxHunger = 100f;        // Максимальный голод
         [SerializeField] private float maxMood = 100f;          // Максимальное настроение
+        [SerializeField] private float maxFatigue = 100f;
         
         [Header("Текущие значения")]
         [SerializeField] private float currentHealth = 100f;    // Текущее здоровье
         [SerializeField] private float currentHunger = 0f;      // Текущий голод (0 = сыт, 100 = очень голоден)
         [SerializeField] private float currentMood = 75f;       // Текущее настроение
         [SerializeField] private float currentMoney = 0f;       // Текущие деньги
+        [SerializeField] private float currentFatigue = 0f;
         [SerializeField] private int currentLevel = 1;          // Текущий уровень
         [SerializeField] private float currentExperience = 0f;  // Текущий опыт
 
@@ -45,23 +47,37 @@ namespace HomelessToMillionaire
         private Dictionary<StatType, float> cachedModifiers = new Dictionary<StatType, float>();
         private bool modifiersCacheValid = false;
 
+        // Legacy events for compatibility with older scripts
+        public event Action<float> OnHealthChanged;
+        public event Action<int> OnLevelUp;
+
         // Публичные свойства для чтения характеристик
         public float Health => currentHealth;
+        public float CurrentHealth => currentHealth;
         public float MaxHealth => GetModifiedStat(StatType.Health, maxHealth);
         public float HealthPercentage => currentHealth / Mathf.Max(MaxHealth, 0.001f);
 
         public float Hunger => currentHunger;
+        public float CurrentHunger => currentHunger;
         public float MaxHunger => GetModifiedStat(StatType.Hunger, maxHunger);
         public float HungerPercentage => currentHunger / Mathf.Max(MaxHunger, 0.001f);
 
         public float Mood => currentMood;
+        public float CurrentMood => currentMood;
         public float MaxMood => GetModifiedStat(StatType.Mood, maxMood);
         public float MoodPercentage => currentMood / Mathf.Max(MaxMood, 0.001f);
 
+        public float Fatigue => currentFatigue;
+        public float CurrentFatigue => currentFatigue;
+        public float MaxFatigue => maxFatigue;
+        public float FatiguePercentage => currentFatigue / Mathf.Max(maxFatigue, 0.001f);
+
         public float Money => currentMoney;
         public int Level => currentLevel;
+        public int CurrentLevel => currentLevel;
         public float Experience => currentExperience;
         public float ExperienceToNext => experienceToNextLevel;
+        public float ExperienceToNextLevel => experienceToNextLevel;
         public float ExperiencePercentage => experienceToNextLevel > 0 ? currentExperience / experienceToNextLevel : 0f;
 
         // Дополнительные свойства
@@ -115,6 +131,7 @@ namespace HomelessToMillionaire
             if (Math.Abs(oldValue - currentHealth) > 0.01f)
             {
                 GameEvents.TriggerStatChanged(StatType.Health, oldValue, currentHealth, maxHealth);
+                OnHealthChanged?.Invoke(currentHealth);
                 
                 // Проверка критических состояний
                 if (IsLowHealth && !IsDead)
@@ -128,6 +145,9 @@ namespace HomelessToMillionaire
                 }
             }
         }
+
+        // Convenience wrappers used by older scripts
+        public void AddHealth(float amount) => ChangeHealth(amount);
 
         /// <summary>
         /// Изменить голод
@@ -150,6 +170,8 @@ namespace HomelessToMillionaire
             }
         }
 
+        public void AddHunger(float amount) => ChangeHunger(amount);
+
         /// <summary>
         /// Изменить настроение
         /// </summary>
@@ -164,6 +186,16 @@ namespace HomelessToMillionaire
                 GameEvents.TriggerStatChanged(StatType.Mood, oldValue, currentMood, maxMood);
             }
         }
+
+        public void AddMood(float amount) => ChangeMood(amount);
+
+        public void ChangeFatigue(float amount)
+        {
+            currentFatigue = Mathf.Clamp(currentFatigue + amount, 0f, maxFatigue);
+            GameEvents.TriggerStatChanged(StatType.Fatigue, 0, currentFatigue, maxFatigue);
+        }
+
+        public void AddFatigue(float amount) => ChangeFatigue(amount);
 
         /// <summary>
         /// Изменить количество денег
@@ -181,7 +213,7 @@ namespace HomelessToMillionaire
                 // Событие заработка денег (только при положительном изменении)
                 if (amount > 0)
                 {
-                    GameEvents.TriggerMoneyEarned(amount);
+                    GameEvents.TriggerMoneyEarned(new MoneyEventData(amount, "stats"));
                 }
             }
         }
@@ -223,6 +255,7 @@ namespace HomelessToMillionaire
                 
                 GameEvents.TriggerStatChanged(StatType.Level, oldLevel, currentLevel, float.MaxValue);
                 GameEvents.TriggerLevelUp(oldLevel, currentLevel, experienceOverflow);
+                OnLevelUp?.Invoke(currentLevel);
             }
         }
 
@@ -312,6 +345,15 @@ namespace HomelessToMillionaire
             currentExperience = 0f;
             experienceToNextLevel = 100f;
         }
+
+        // Compatibility helpers
+        public int GetLevel() => currentLevel;
+        public void SetLevel(int level) => currentLevel = level;
+        public void SetExperience(float exp) => currentExperience = exp;
+        public void SetHealth(float value) => currentHealth = value;
+        public void SetHunger(float value) => currentHunger = value;
+        public void SetMood(float value) => currentMood = value;
+        public void SetMoney(float value) => currentMoney = value;
 
         /// <summary>
         /// Валидация характеристик (проверка корректности значений)
@@ -403,6 +445,15 @@ namespace HomelessToMillionaire
                 statModifiers[modifier.statType].Remove(modifier);
                 modifiersCacheValid = false;
             }
+        }
+
+        public void RemoveStatModifiersBySource(string source)
+        {
+            foreach (var list in statModifiers.Values)
+            {
+                list.RemoveAll(m => m.source == source);
+            }
+            modifiersCacheValid = false;
         }
 
         /// <summary>
@@ -577,14 +628,13 @@ namespace HomelessToMillionaire
             if (shopSystem == null) return;
 
             var purchasedItems = shopSystem.GetPurchasedItems();
-            foreach (var itemId in purchasedItems)
+            foreach (var item in purchasedItems)
             {
-                var item = shopSystem.GetItemById(itemId);
                 if (item != null && item.statEffects != null)
                 {
                     foreach (var effect in item.statEffects)
                     {
-                        AddStatModifier(new StatModifier(effect.Key, effect.Value, ModifierOperation.Add, $"Item_{itemId}"));
+                        AddStatModifier(new StatModifier(effect.Key, effect.Value, ModifierOperation.Add, $"Item_{item.id}"));
                     }
                 }
             }
@@ -691,6 +741,8 @@ namespace HomelessToMillionaire
         public ModifierOperation operation; // Операция применения
         public string source;               // Источник модификатора
         public int priority;                // Приоритет применения
+        public float duration;              // Длительность действия
+        public float startTime;             // Время начала
 
         public StatModifier(StatType statType, float value, ModifierOperation operation, string source, int priority = 0)
         {
@@ -699,6 +751,14 @@ namespace HomelessToMillionaire
             this.operation = operation;
             this.source = source;
             this.priority = priority;
+            this.duration = 0f;
+            this.startTime = Time.time;
+        }
+
+        public StatModifier(StatType statType, float value, ModifierOperation operation, string source, float duration)
+            : this(statType, value, operation, source, 0)
+        {
+            this.duration = duration;
         }
 
         public override bool Equals(object obj)

@@ -144,7 +144,9 @@ namespace HomelessToMillionaire
         Success,        // Успех
         Warning,        // Предупреждение
         Danger,         // Опасность
-        Achievement     // Достижение
+        Achievement,    // Достижение
+        Money,          // Изменение денег
+        Critical        // Критическое уведомление
     }
 
     /// <summary>
@@ -223,8 +225,11 @@ namespace HomelessToMillionaire
         Cleaner,        // Уборщик
         Security,       // Охранник
         Seller,         // Продавец
+        Cashier,
+        Salesman,
         Manager,        // Менеджер
         Businessman,    // Бизнесмен
+        Entrepreneur,
         CEO             // Директор
     }
 
@@ -249,6 +254,7 @@ namespace HomelessToMillionaire
         Poor,           // Плохое качество
         Common,         // Обычное качество
         Good,           // Хорошее качество
+        Excellent,      // Отличное качество
         Premium,        // Премиум качество
         Luxury          // Люкс качество
     }
@@ -361,6 +367,7 @@ namespace HomelessToMillionaire
     /// </summary>
     public enum WeatherType
     {
+        Any,
         Clear,          // Ясно
         Cloudy,         // Облачно
         Rainy,          // Дождь
@@ -421,7 +428,13 @@ namespace HomelessToMillionaire
         Early_Bird_Special, // Ранние скидки
         Weekend_Event,      // Выходное событие
         Holiday_Event,      // Праздничное событие
-        Emergency_Event     // Экстренное событие
+        Emergency_Event,    // Экстренное событие
+        Danger,
+        Opportunity,
+        Work,
+        Positive,
+        Choice,
+        Skill_Challenge
     }
 
     /// <summary>
@@ -437,7 +450,12 @@ namespace HomelessToMillionaire
         Entertainment,  // Развлечения
         Random,         // Случайные события
         Weather,        // Погодные события
-        Holiday         // Праздничные события
+        Holiday,        // Праздничные события
+        Moral,
+        Performance,
+        Career,
+        Business,
+        Survival
     }
 
     /// <summary>
@@ -496,6 +514,11 @@ namespace HomelessToMillionaire
         BrokenBottle,   // Разбитая бутылка
         Hammer,         // Молоток
         Chain,          // Цепь
+        Knuckles,       // Кастет
+        Crowbar,        // Лом
+        Machete,        // Мачете
+        Sword,          // Меч
+        Axe,            // Топор
         Taser,          // Электрошокер
         PepperSpray     // Газовый баллончик
     }
@@ -586,7 +609,10 @@ namespace HomelessToMillionaire
         Minor,          // Незначительный (штраф)
         Moderate,       // Умеренный (арест возможен)
         High,           // Высокий (активный поиск)
-        Maximum         // Максимальный (стрельба на поражение)
+        Serious,
+        Dangerous,
+        MostWanted,
+        Maximum = MostWanted
     }
 
     /// <summary>
@@ -603,7 +629,10 @@ namespace HomelessToMillionaire
         BarFight,          // Драка в баре
         StreetFight,       // Уличная драка
         Mugging,           // Нападение
-        Protection         // Защита кого-то
+        Protection,        // Защита кого-то
+        TerritoryDispute,
+        Gang_Conflict,
+        Revenge
     }
 
     /// <summary>
@@ -682,7 +711,9 @@ namespace HomelessToMillionaire
     {
         Blunt,             // Тупой (кулаки, дубинка)
         Cutting,           // Режущий (нож, стекло)
+        Slashing = Cutting,
         Piercing,          // Колющий (пистолет)
+        Ballistic = Piercing,
         Electric,          // Электрический (шокер)
         Chemical,          // Химический (газ)
         Psychological      // Психологический (запугивание)
@@ -810,7 +841,14 @@ namespace HomelessToMillionaire
         DrunkAndDisorderly, // Пьянство и нарушение порядка
         Harassment,         // Домогательство
         Shoplifting,        // Мелкая кража
-        Disturbance         // Нарушение общественного порядка
+        Disturbance,        // Нарушение общественного порядка
+        MinorViolation,
+        PublicDisorder,
+        Theft,
+        Aggression,
+        Vandalism,
+        IllegalBusiness,
+        BribeAttempt
     }
 
     /// <summary>
@@ -821,9 +859,14 @@ namespace HomelessToMillionaire
         Homeless,           // Бездомные
         Workers,            // Рабочие
         Students,           // Студенты
-        BusinessClass,      // Бизнес-класс
-        Elite,              // Элита
-        Criminals,          // Криминальные элементы
+        Business,           // Бизнес-класс
+        Government,         // Правительство
+        HighSociety,        // Высшее общество
+        Community,          // Сообщество
+        Religious,          // Религиозные группы
+        Academic,           // Академическое сообщество
+        Media,              // СМИ
+        Criminal,           // Преступники
         Officials,          // Чиновники
         Artists,            // Творческие люди
         Elderly,            // Пожилые люди

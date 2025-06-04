@@ -270,6 +270,9 @@ namespace HomelessToMillionaire
         public string version = "1.0.0";
         public long saveDate = 0;
         public string checksum = "";
+        public string saveName = "";
+        public DateTime createdDate = DateTime.Now;
+        public string gameVersion = "";
 
         [Header("Состояние игры")]
         public float gameTime = 0f;
@@ -301,6 +304,9 @@ namespace HomelessToMillionaire
             version = SaveValidation.GetCurrentSaveVersion();
             saveDate = DateTime.Now.ToBinary();
             checksum = "";
+            saveName = string.Empty;
+            createdDate = DateTime.Now;
+            gameVersion = version;
             gameTime = 0f;
             difficultyMultiplier = 1f;
             timeOfDay = TimeOfDay.Day;
@@ -397,6 +403,7 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class SaveSlotInfo
     {
+        public int slotIndex;
         public string saveName;
         public int level;
         public float money;
@@ -639,12 +646,19 @@ namespace HomelessToMillionaire
     [System.Serializable]
     public class EducationSystemSaveData : BaseSaveData
     {
+        // Legacy fields for backward compatibility
+        public string currentCourseTitle = string.Empty;
+        public bool isStudying = false;
+        public float studyTimeRemaining = 0f;
+        public long lastStudyDay = 0;
+
         public EducationType? currentCourseType;
         public float currentCourseProgress = 0f;
         public DateTime currentCourseStartTime;
         public int coursesCompletedToday = 0;
         public DateTime lastCourseDate;
         public List<EducationType> completedCourses = new List<EducationType>();
+        public List<DegreeData> obtainedDegrees = new List<DegreeData>();
         public List<string> earnedCertificates = new List<string>();
 
         public override bool IsValid()
@@ -659,12 +673,17 @@ namespace HomelessToMillionaire
         {
             version = SaveVersion.CURRENT_VERSION;
             lastSaved = DateTime.Now;
+            currentCourseTitle = string.Empty;
+            isStudying = false;
+            studyTimeRemaining = 0f;
+            lastStudyDay = DateTime.MinValue.ToBinary();
             currentCourseType = null;
             currentCourseProgress = 0f;
             currentCourseStartTime = DateTime.MinValue;
             coursesCompletedToday = 0;
             lastCourseDate = DateTime.MinValue;
             completedCourses = new List<EducationType>();
+            obtainedDegrees = new List<DegreeData>();
             earnedCertificates = new List<string>();
         }
     }

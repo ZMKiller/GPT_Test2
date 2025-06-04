@@ -135,8 +135,8 @@ namespace HomelessToMillionaire
             if (!isInitialized || amount <= 0) return;
 
             int currentLevel = playerStats.Level;
-            int currentExp = playerStats.Experience;
-            int newExp = currentExp + amount;
+            float currentExp = playerStats.Experience;
+            float newExp = currentExp + amount;
 
             playerStats.SetExperience(newExp);
             OnExperienceGained?.Invoke(amount);
@@ -263,7 +263,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Проверка повышения уровня
         /// </summary>
-        private void CheckLevelUp(int oldLevel, int currentExp)
+        private void CheckLevelUp(int oldLevel, float currentExp)
         {
             int newLevel = CalculateLevelFromExperience(currentExp);
             
@@ -276,7 +276,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Вычислить уровень по опыту
         /// </summary>
-        private int CalculateLevelFromExperience(int experience)
+        private int CalculateLevelFromExperience(float experience)
         {
             for (int level = 1; level <= maxLevel; level++)
             {
@@ -323,7 +323,7 @@ namespace HomelessToMillionaire
                 newLevel = newLevel,
                 skillPointsGained = totalSkillPoints,
                 moneyGained = totalMoney,
-                unlockedFeatures = GetUnlockedFeatures(newLevel)
+                unlockedFeatures = new System.Collections.Generic.List<string>(GetUnlockedFeatures(newLevel))
             };
             
             // Визуальные эффекты
@@ -333,8 +333,8 @@ namespace HomelessToMillionaire
             OnLevelUp?.Invoke(levelUpData);
             GameEvents.TriggerLevelUp(levelUpData);
             
-            Debug.Log($"Повышение уровня! {oldLevel} → {newLevel} " +
-                     $"(+{totalSkillPoints} очков навыков, +{GameUtils.FormatMoney(totalMoney)})");
+                Debug.Log($"Повышение уровня! {oldLevel} → {newLevel} " +
+                       $"(+{totalSkillPoints} очков навыков, +{GameUtils.FormatMoney((float)totalMoney)})");
         }
 
         /// <summary>
@@ -624,59 +624,4 @@ namespace HomelessToMillionaire
         #endregion
     }
 
-    /// <summary>
-    /// Данные о повышении уровня
-    /// </summary>
-    [System.Serializable]
-    public class LevelUpData
-    {
-        public int oldLevel;
-        public int newLevel;
-        public int skillPointsGained;
-        public double moneyGained;
-        public string[] unlockedFeatures;
-        
-        public DateTime timestamp = DateTime.Now;
-    }
-
-    /// <summary>
-    /// Данные системы уровней для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class LevelSystemSaveData
-    {
-        public int prestigeLevel = 0;
-        public long lastLevelUpTime = 0;
-    }
-
-    /// <summary>
-    /// Данные событий для новых систем
-    /// </summary>
-    [System.Serializable]
-    public class JobEventData
-    {
-        public JobType jobType;
-        public double payment;
-        public int hoursWorked;
-        public DateTime timestamp = DateTime.Now;
-    }
-
-    [System.Serializable]
-    public class EducationEventData
-    {
-        public EducationType educationType;
-        public double cost;
-        public int skillPointsGained;
-        public DateTime completionTime = DateTime.Now;
-    }
-
-    [System.Serializable]
-    public class ShopEventData
-    {
-        public ShopCategory category;
-        public string itemName;
-        public double totalCost;
-        public ItemQuality quality;
-        public DateTime purchaseTime = DateTime.Now;
-    }
 }

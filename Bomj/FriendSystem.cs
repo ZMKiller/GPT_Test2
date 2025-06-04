@@ -1339,12 +1339,12 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены локации
         /// </summary>
-        private void OnLocationChanged(Location oldLocation, Location newLocation)
+        private void OnLocationChanged(LocationType oldLocation, LocationType newLocation)
         {
             // Обновить доступность друзей в зависимости от локации
             foreach (var friend in friends.Values)
             {
-                friend.isAvailable = IsFriendAvailableInLocation(friend, newLocation);
+                friend.isAvailable = IsFriendAvailableInLocation(friend, (Location)newLocation);
             }
         }
 
@@ -1494,6 +1494,7 @@ namespace HomelessToMillionaire
         Business,           // Деловая помощь
         Safety,             // Безопасность
         Secrets,            // Секреты
+        Advice,             // Совет
         IllegalServices     // Нелегальные услуги
     }
 

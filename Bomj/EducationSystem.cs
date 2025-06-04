@@ -41,7 +41,9 @@ namespace HomelessToMillionaire
 
         // События
         public event Action<EducationCourse> OnCourseStarted;
+        public event Action<EducationCourse> OnEducationStarted;
         public event Action<EducationCourse, EducationResult> OnCourseCompleted;
+        public event Action<EducationCourse, EducationResult> OnEducationCompleted;
         public event Action<EducationDegree> OnDegreeObtained;
         public event Action<List<EducationCourse>> OnAvailableCoursesUpdated;
 
@@ -349,6 +351,7 @@ namespace HomelessToMillionaire
             // Эффекты
             PlayCourseStartSound();
             OnCourseStarted?.Invoke(course);
+            OnEducationStarted?.Invoke(course);
             
             GameEvents.TriggerNotification(
                 $"Начато обучение: {course.title}",
@@ -381,7 +384,7 @@ namespace HomelessToMillionaire
             studyTimeRemaining = 0f;
 
             GameEvents.TriggerNotification("Обучение прекращено досрочно", NotificationType.Warning);
-            Debug.Log($"Обучение прекращено досрочно. Возврат средств: {GameUtils.FormatMoney(refund)}");
+            Debug.Log($"Обучение прекращено досрочно. Возврат средств: {GameUtils.FormatMoney((float)refund)}");
         }
 
         /// <summary>
@@ -406,9 +409,19 @@ namespace HomelessToMillionaire
         public float GetStudyProgress()
         {
             if (!isStudying || currentCourse == null) return 0f;
-            
+
             float totalTime = currentCourse.duration * 3600f;
             return 1f - (studyTimeRemaining / totalTime);
+        }
+
+        public float GetCurrentCourseProgress()
+        {
+            return GetStudyProgress();
+        }
+
+        public bool CanStartCourse(EducationCourse course)
+        {
+            return !isStudying && IsCourseAvailable(course);
         }
 
         /// <summary>
@@ -564,6 +577,7 @@ namespace HomelessToMillionaire
             // Эффекты и события
             PlayCourseCompleteSound();
             OnCourseCompleted?.Invoke(currentCourse, result);
+            OnEducationCompleted?.Invoke(currentCourse, result);
             
             GameEvents.TriggerEducationCompleted(new EducationEventData
             {
@@ -685,7 +699,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             UpdateAvailableCourses();
         }
@@ -925,38 +939,4 @@ namespace HomelessToMillionaire
     /// <summary>
     /// Данные системы образования для сохранения
     /// </summary>
-    [System.Serializable]
-    public class EducationSystemSaveData
-    {
-        public string currentCourseTitle = "";
-        public bool isStudying = false;
-        public float studyTimeRemaining = 0f;
-        public int coursesCompletedToday = 0;
-        public long lastStudyDay = 0;
-        public List<CompletedCourseData> completedCourses = new List<CompletedCourseData>();
-        public List<DegreeData> obtainedDegrees = new List<DegreeData>();
-    }
-
-    /// <summary>
-    /// Данные завершенного курса
-    /// </summary>
-    [System.Serializable]
-    public class CompletedCourseData
-    {
-        public string title;
-        public string educationType;
-        public long completionTime;
-    }
-
-    /// <summary>
-    /// Данные диплома
-    /// </summary>
-    [System.Serializable]
-    public class DegreeData
-    {
-        public string name;
-        public string educationType;
-        public long dateObtained;
-        public string institution;
-    }
 }

@@ -804,7 +804,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены локации
         /// </summary>
-        private void OnLocationChanged(Location oldLocation, Location newLocation)
+        private void OnLocationChanged(LocationType oldLocation, LocationType newLocation)
         {
             // Обновить уровень угрозы
             float newThreatLevel = CalculateCurrentThreatLevel();

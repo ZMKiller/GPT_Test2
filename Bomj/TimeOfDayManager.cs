@@ -128,10 +128,7 @@ namespace HomelessToMillionaire
         private void SubscribeToEvents()
         {
             // Подписка на события паузы игры
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
-            }
+            GameManager.OnGameStateChanged += OnGameStateChanged;
         }
 
         /// <summary>
@@ -139,10 +136,7 @@ namespace HomelessToMillionaire
         /// </summary>
         private void UnsubscribeFromEvents()
         {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-            }
+            GameManager.OnGameStateChanged -= OnGameStateChanged;
         }
 
         #endregion
@@ -675,13 +669,4 @@ namespace HomelessToMillionaire
     /// <summary>
     /// Данные TimeOfDayManager для сохранения
     /// </summary>
-    [System.Serializable]
-    public class TimeOfDayManagerSaveData
-    {
-        public long currentDateTime;
-        public Season currentSeason;
-        public TimeSpeed timeSpeed;
-        public bool enableTimeFlow;
-        public float realSecondsPerGameHour;
-    }
 }

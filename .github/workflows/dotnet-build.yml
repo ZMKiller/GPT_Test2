@@ -18,7 +18,7 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Bomj/HomelessToMillionaire.csproj
 
-    - name: Build solution
-      run: dotnet build --no-restore --warnaserror
+    - name: Build project
+      run: dotnet build Bomj/HomelessToMillionaire.csproj --no-restore --warnaserror

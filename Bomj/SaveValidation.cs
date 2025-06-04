@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
-// using Newtonsoft.Json; // Заменено на Unity JsonUtility
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HomelessToMillionaire

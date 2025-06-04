@@ -45,23 +45,32 @@ namespace HomelessToMillionaire
         private Dictionary<StatType, float> cachedModifiers = new Dictionary<StatType, float>();
         private bool modifiersCacheValid = false;
 
+        // Legacy events for compatibility with older scripts
+        public event Action<float> OnHealthChanged;
+        public event Action<int> OnLevelUp;
+
         // Публичные свойства для чтения характеристик
         public float Health => currentHealth;
+        public float CurrentHealth => currentHealth;
         public float MaxHealth => GetModifiedStat(StatType.Health, maxHealth);
         public float HealthPercentage => currentHealth / Mathf.Max(MaxHealth, 0.001f);
 
         public float Hunger => currentHunger;
+        public float CurrentHunger => currentHunger;
         public float MaxHunger => GetModifiedStat(StatType.Hunger, maxHunger);
         public float HungerPercentage => currentHunger / Mathf.Max(MaxHunger, 0.001f);
 
         public float Mood => currentMood;
+        public float CurrentMood => currentMood;
         public float MaxMood => GetModifiedStat(StatType.Mood, maxMood);
         public float MoodPercentage => currentMood / Mathf.Max(MaxMood, 0.001f);
 
         public float Money => currentMoney;
         public int Level => currentLevel;
+        public int CurrentLevel => currentLevel;
         public float Experience => currentExperience;
         public float ExperienceToNext => experienceToNextLevel;
+        public float ExperienceToNextLevel => experienceToNextLevel;
         public float ExperiencePercentage => experienceToNextLevel > 0 ? currentExperience / experienceToNextLevel : 0f;
 
         // Дополнительные свойства
@@ -115,6 +124,7 @@ namespace HomelessToMillionaire
             if (Math.Abs(oldValue - currentHealth) > 0.01f)
             {
                 GameEvents.TriggerStatChanged(StatType.Health, oldValue, currentHealth, maxHealth);
+                OnHealthChanged?.Invoke(currentHealth);
                 
                 // Проверка критических состояний
                 if (IsLowHealth && !IsDead)
@@ -230,6 +240,7 @@ namespace HomelessToMillionaire
                 
                 GameEvents.TriggerStatChanged(StatType.Level, oldLevel, currentLevel, float.MaxValue);
                 GameEvents.TriggerLevelUp(oldLevel, currentLevel, experienceOverflow);
+                OnLevelUp?.Invoke(currentLevel);
             }
         }
 
@@ -319,6 +330,15 @@ namespace HomelessToMillionaire
             currentExperience = 0f;
             experienceToNextLevel = 100f;
         }
+
+        // Compatibility helpers
+        public int GetLevel() => currentLevel;
+        public void SetLevel(int level) => currentLevel = level;
+        public void SetExperience(float exp) => currentExperience = exp;
+        public void SetHealth(float value) => currentHealth = value;
+        public void SetHunger(float value) => currentHunger = value;
+        public void SetMood(float value) => currentMood = value;
+        public void SetMoney(float value) => currentMoney = value;
 
         /// <summary>
         /// Валидация характеристик (проверка корректности значений)
@@ -410,6 +430,15 @@ namespace HomelessToMillionaire
                 statModifiers[modifier.statType].Remove(modifier);
                 modifiersCacheValid = false;
             }
+        }
+
+        public void RemoveStatModifiersBySource(string source)
+        {
+            foreach (var list in statModifiers.Values)
+            {
+                list.RemoveAll(m => m.source == source);
+            }
+            modifiersCacheValid = false;
         }
 
         /// <summary>

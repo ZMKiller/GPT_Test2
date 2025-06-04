@@ -578,26 +578,26 @@ namespace HomelessToMillionaire
         #endregion
     }
 
-    /// <summary>
-    /// Данные событий навыков
-    /// </summary>
-    [System.Serializable]
-    public class SkillUpgradeEventData
+
+    [Serializable]
+    public class SkillModifier
     {
         public SkillType skillType;
-        public int newLevel;
-        public int pointsSpent;
-        public DateTime timestamp = DateTime.Now;
-    }
+        public float value;
+        public ModifierOperation operation;
+        public string source;
+        public float duration;
+        public float startTime;
 
-    /// <summary>
-    /// Данные системы навыков для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class SkillSystemSaveData
-    {
-        public Dictionary<string, int> skills = new Dictionary<string, int>();
-        public int availableSkillPoints = 0;
+        public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
+        {
+            this.skillType = skillType;
+            this.value = value;
+            this.operation = operation;
+            this.source = source;
+            this.duration = duration;
+            this.startTime = Time.time;
+        }
     }
 
     [Serializable]

@@ -181,7 +181,7 @@ namespace HomelessToMillionaire
                 // Событие заработка денег (только при положительном изменении)
                 if (amount > 0)
                 {
-                    GameEvents.TriggerMoneyEarned(amount);
+                    GameEvents.TriggerMoneyEarned(new MoneyEventData(amount, "stats"));
                 }
             }
         }

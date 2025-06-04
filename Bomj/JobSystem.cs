@@ -901,8 +901,5 @@ namespace HomelessToMillionaire
         public string failureReason;
     }
 
-    /// <summary>
-    /// Данные системы работы для сохранения
-    /// </summary>
-    [System.Serializable]
+   
 }

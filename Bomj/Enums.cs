@@ -24,6 +24,7 @@ namespace HomelessToMillionaire
         EarningsMultiplier,     // Множитель заработка
         ExperienceMultiplier,   // Множитель получения опыта
         LearningSpeedMultiplier,// Множитель скорости обучения
+        LearningMultiplier = LearningSpeedMultiplier,
         WorkEfficiencyMultiplier,// Множитель эффективности работы
 
         // Модификаторы удачи и шансов
@@ -199,11 +200,18 @@ namespace HomelessToMillionaire
     /// </summary>
     public enum SkillType
     {
-        Charisma,       // Харизма - влияет на заработок от людей
-        Education,      // Образование - открывает работы и курсы
-        Fitness,        // Физическая форма - влияет на здоровье
-        Luck,           // Удача - случайные бонусы и события
-        Business        // Деловые навыки - бизнес и высокие доходы
+        None,
+        Charisma,
+        Education,
+        Fitness,
+        Luck,
+        Business,
+        Computer,
+        Stealth,
+        Streetwise,
+        Physical_Fitness,
+        Intelligence,
+        Business_Skills
     }
 
     /// <summary>
@@ -329,7 +337,8 @@ namespace HomelessToMillionaire
     {
         EarlyMorning,   // Раннее утро (5-8)
         Morning,        // Утро (8-12)
-        Afternoon,      // День (12-17)
+        Day,
+        Afternoon = Day,
         Evening,        // Вечер (17-21)
         Night,          // Ночь (21-1)
         LateNight       // Поздняя ночь (1-5)
@@ -611,7 +620,17 @@ namespace HomelessToMillionaire
         Hospital,          // Больница
         Fine,              // Штраф
         Witness,           // Свидетели
-        Revenge            // Месть
+        Revenge,
+        ReputationGain,
+        ReputationLoss,
+        ItemFound,
+        Hospitalization,
+        Pursuit,
+        WitnessReport,
+        RandomHelp,
+        Retaliation,
+        JobOffer,
+        MedicalAssistance
     }
 
     /// <summary>
@@ -870,130 +889,6 @@ namespace HomelessToMillionaire
         Critical            // Критическое
     }
 
-    // ==========================================
-    // ДОПОЛНИТЕЛЬНЫЕ ПЕРЕЧИСЛЕНИЯ ДЛЯ STEP 9
-    // ==========================================
-
-    /// <summary>
-    /// Типы транспорта
-    /// </summary>
-    public enum TransportType
-    {
-        Walking,            // Пешком
-        Bicycle,            // Велосипед
-        Motorcycle,         // Мотоцикл
-        Car,                // Автомобиль
-        PublicTransport,    // Общественный транспорт
-        Taxi                // Такси
-    }
-
-    /// <summary>
-    /// Состояние транспорта
-    /// </summary>
-    public enum TransportCondition
-    {
-        Excellent,          // Отличное
-        Good,               // Хорошее
-        Fair,               // Удовлетворительное
-        Poor,               // Плохое
-        Broken              // Сломано
-    }
-
-    /// <summary>
-    /// Типы друзей
-    /// </summary>
-    public enum FriendType
-    {
-        Helper,             // Помощник
-        Teacher,            // Учитель
-        BusinessPartner,    // Деловой партнер
-        Protector,          // Защитник
-        Informant,          // Информатор
-        Criminal,           // Преступник
-        Mentor,             // Наставник
-        Rival,              // Соперник
-        Official            // Чиновник
-    }
-
-    /// <summary>
-    /// Уровни отношений
-    /// </summary>
-    public enum RelationshipLevel
-    {
-        Enemy,              // Враг
-        Hostile,            // Враждебный
-        Unfriendly,         // Недружелюбный
-        Neutral,            // Нейтральный
-        Friendly,           // Дружелюбный
-        Good,               // Хороший
-        Best,               // Лучший друг
-        Trusted,            // Доверенное лицо
-        Family              // Как семья
-    }
-
-    /// <summary>
-    /// Типы случайных событий
-    /// </summary>
-    public enum RandomEventType
-    {
-        // Личные события
-        LuckyFind,          // Счастливая находка
-        UnexpectedMeeting,  // Неожиданная встреча
-        JobOffer,           // Предложение работы
-        Investment,         // Инвестиционная возможность
-        Inheritance,        // Наследство
-        Accident,           // Несчастный случай
-
-        // Глобальные события
-        EconomicCrisis,     // Экономический кризис
-        EconomicBoom,       // Экономический подъем
-        WeatherDisaster,    // Погодное бедствие
-        PoliticalChange,    // Политические изменения
-
-        // Локационные события
-        NewBusiness,        // Новый бизнес
-        AreaUpgrade,        // Улучшение района
-        AreaDecline,        // Упадок района
-        SpecialSale,        // Специальная распродажа
-
-        // Временные события
-        CommunityEvent,     // Общественное мероприятие
-        Celebration,        // Празднование
-        Protest,            // Протест
-        Festival            // Фестиваль
-    }
-
-    /// <summary>
-    /// Типы нарушений
-    /// </summary>
-    public enum ViolationType
-    {
-        MinorViolation,     // Мелкое нарушение
-        PublicDisorder,     // Нарушение общественного порядка
-        Vagrancy,           // Бродяжничество
-        Theft,              // Кража
-        Aggression,         // Агрессия
-        Vandalism,          // Вандализм
-        Trespassing,        // Проникновение на частную территорию
-        IllegalBusiness,    // Незаконная торговля
-        BribeAttempt        // Попытка дачи взятки
-    }
-
-    /// <summary>
-    /// Социальные группы
-    /// </summary>
-    public enum SocialGroup
-    {
-        HighSociety,        // Высшее общество
-        Business,           // Деловые круги
-        Government,         // Государственные органы
-        Academic,           // Академические круги
-        Media,              // СМИ
-        Religious,          // Религиозные общины
-        Community,          // Местные сообщества
-        Criminal,           // Криминальные группировки
-        Homeless            // Бездомные
-    }
 
     /// <summary>
     /// Социальные статусы

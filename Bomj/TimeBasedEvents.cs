@@ -1082,11 +1082,11 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня игрока
         /// </summary>
-        private void OnPlayerLevelUp(int newLevel, LevelUpRewards rewards)
+        private void OnPlayerLevelUp(LevelUpData data)
         {
             // Проверить события, связанные с уровнем
-            var levelSpecificEvents = levelBasedEvents.Where(e => 
-                e.requirements.minLevel == newLevel && 
+            var levelSpecificEvents = levelBasedEvents.Where(e =>
+                e.requirements.minLevel == data.newLevel &&
                 !completedEvents.Contains(e.id));
 
             foreach (var eventData in levelSpecificEvents)

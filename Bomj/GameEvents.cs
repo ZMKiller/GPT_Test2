@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HomelessToMillionaire
@@ -133,6 +134,8 @@ namespace HomelessToMillionaire
     {
         public JobType jobType;             // Тип работы
         public double salary;               // Зарплата
+        public double payment;              // Итоговая выплата
+        public int hoursWorked;             // Отработанные часы
         public int experienceGained;        // Полученный опыт
         public bool wasSuccessful;          // Успешно ли завершена
         public TimeSpan workDuration;       // Продолжительность работы
@@ -144,6 +147,8 @@ namespace HomelessToMillionaire
             this.experienceGained = exp;
             this.wasSuccessful = success;
             this.workDuration = duration;
+            this.payment = salary;
+            this.hoursWorked = (int)duration.TotalHours;
         }
     }
 
@@ -200,7 +205,8 @@ namespace HomelessToMillionaire
     {
         // События характеристик
         public static event Action<StatChangedEventData> OnStatChanged;
-        public static event Action<LevelUpEventData> OnLevelUp;
+        // Deprecated: old level-up event using simple data
+        // public static event Action<LevelUpEventData> OnLevelUp;
         
         // События состояния здоровья
         public static event Action OnLowHealth;
@@ -208,7 +214,8 @@ namespace HomelessToMillionaire
         public static event Action OnPlayerDeath;
         
         // События игрового процесса
-        public static event Action<float> OnMoneyEarned;    // float - количество заработанных денег
+        // Deprecated: old money earned event
+        // public static event Action<float> OnMoneyEarned;    // float - количество заработанных денег
         public static event Action<float> OnFoodConsumed;   // float - количество восстановленного голода
         public static event Action<float> OnRestTaken;      // float - количество восстановленного настроения
         
@@ -275,12 +282,10 @@ namespace HomelessToMillionaire
             OnStatChanged?.Invoke(new StatChangedEventData(statType, oldValue, newValue, maxValue));
         }
 
-        /// <summary>
-        /// Вызвать событие повышения уровня
-        /// </summary>
+        // Legacy overload kept for backward compatibility
         public static void TriggerLevelUp(int oldLevel, int newLevel, float experienceOverflow)
         {
-            OnLevelUp?.Invoke(new LevelUpEventData(oldLevel, newLevel, experienceOverflow));
+            OnLevelUp?.Invoke(new LevelUpData(oldLevel, newLevel, experienceOverflow, 0, 0));
         }
 
         /// <summary>
@@ -307,12 +312,10 @@ namespace HomelessToMillionaire
             OnPlayerDeath?.Invoke();
         }
 
-        /// <summary>
-        /// Вызвать событие заработка денег
-        /// </summary>
+        // Legacy overload kept for backward compatibility
         public static void TriggerMoneyEarned(float amount)
         {
-            OnMoneyEarned?.Invoke(amount);
+            OnMoneyEarned?.Invoke(new MoneyEventData(amount, "legacy"));
         }
 
         /// <summary>

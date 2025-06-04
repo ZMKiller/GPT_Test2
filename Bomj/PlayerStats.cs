@@ -129,6 +129,9 @@ namespace HomelessToMillionaire
             }
         }
 
+        // Convenience wrappers used by older scripts
+        public void AddHealth(float amount) => ChangeHealth(amount);
+
         /// <summary>
         /// Изменить голод
         /// </summary>
@@ -150,6 +153,8 @@ namespace HomelessToMillionaire
             }
         }
 
+        public void AddHunger(float amount) => ChangeHunger(amount);
+
         /// <summary>
         /// Изменить настроение
         /// </summary>
@@ -164,6 +169,8 @@ namespace HomelessToMillionaire
                 GameEvents.TriggerStatChanged(StatType.Mood, oldValue, currentMood, maxMood);
             }
         }
+
+        public void AddMood(float amount) => ChangeMood(amount);
 
         /// <summary>
         /// Изменить количество денег
@@ -181,7 +188,7 @@ namespace HomelessToMillionaire
                 // Событие заработка денег (только при положительном изменении)
                 if (amount > 0)
                 {
-                    GameEvents.TriggerMoneyEarned(amount);
+                    GameEvents.TriggerMoneyEarned(new MoneyEventData(amount, "stats"));
                 }
             }
         }
@@ -691,6 +698,8 @@ namespace HomelessToMillionaire
         public ModifierOperation operation; // Операция применения
         public string source;               // Источник модификатора
         public int priority;                // Приоритет применения
+        public float duration;              // Длительность действия
+        public float startTime;             // Время начала
 
         public StatModifier(StatType statType, float value, ModifierOperation operation, string source, int priority = 0)
         {
@@ -699,6 +708,14 @@ namespace HomelessToMillionaire
             this.operation = operation;
             this.source = source;
             this.priority = priority;
+            this.duration = 0f;
+            this.startTime = Time.time;
+        }
+
+        public StatModifier(StatType statType, float value, ModifierOperation operation, string source, float duration)
+            : this(statType, value, operation, source, 0)
+        {
+            this.duration = duration;
         }
 
         public override bool Equals(object obj)

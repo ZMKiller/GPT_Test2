@@ -311,11 +311,11 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик получения денег
         /// </summary>
-        private void OnMoneyEarned(float amount)
+        private void OnMoneyEarned(MoneyEventData data)
         {
-            if (saveOnBigMoneyGain && enableAutoSave && amount >= bigMoneyThreshold)
+            if (saveOnBigMoneyGain && enableAutoSave && data.amount >= bigMoneyThreshold)
             {
-                TriggerAutoSave($"Получено {GameUtils.FormatMoney(amount)}");
+                TriggerAutoSave($"Получено {GameUtils.FormatMoney((float)data.amount)}");
             }
         }
 

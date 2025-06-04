@@ -785,19 +785,4 @@ namespace HomelessToMillionaire
     /// Данные системы магазина для сохранения
     /// </summary>
     [System.Serializable]
-    public class ShopSystemSaveData
-    {
-        public List<PurchasedItemData> purchasedItems = new List<PurchasedItemData>();
-    }
-
-    /// <summary>
-    /// Данные купленного товара
-    /// </summary>
-    [System.Serializable]
-    public class PurchasedItemData
-    {
-        public string name;
-        public string category;
-        public long purchaseTime;
-    }
 }

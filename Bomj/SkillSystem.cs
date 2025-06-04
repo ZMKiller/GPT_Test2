@@ -28,10 +28,14 @@ namespace HomelessToMillionaire
 
         // Навыки
         private Dictionary<SkillType, int> skills = new Dictionary<SkillType, int>();
+        private Dictionary<SkillType, float> skillExperience = new();
         private int availableSkillPoints = 0;
 
         // Бонусы
         private Dictionary<SkillType, float> skillBonuses = new Dictionary<SkillType, float>();
+
+        // Модификаторы навыков
+        private Dictionary<SkillType, List<SkillModifier>> skillModifiers = new();
 
         // События
         public event Action<SkillType, int> OnSkillUpgraded;
@@ -203,6 +207,26 @@ namespace HomelessToMillionaire
 
             Debug.Log($"Навык {skillType} улучшен до уровня {skills[skillType]} (стоимость: {cost})");
             return true;
+        }
+
+        /// <summary>
+        /// Добавить опыт навыку
+        /// </summary>
+        public void AddSkillExperience(SkillType skillType, float amount, string reason = "")
+        {
+            if (!skillExperience.ContainsKey(skillType))
+                skillExperience[skillType] = 0f;
+            skillExperience[skillType] += amount;
+        }
+
+        /// <summary>
+        /// Добавить временный модификатор навыка
+        /// </summary>
+        public void AddSkillModifier(SkillModifier modifier)
+        {
+            if (!skillModifiers.ContainsKey(modifier.skillType))
+                skillModifiers[modifier.skillType] = new List<SkillModifier>();
+            skillModifiers[modifier.skillType].Add(modifier);
         }
 
         /// <summary>
@@ -554,25 +578,25 @@ namespace HomelessToMillionaire
         #endregion
     }
 
-    /// <summary>
-    /// Данные событий навыков
-    /// </summary>
-    [System.Serializable]
-    public class SkillUpgradeEventData
+
+    [Serializable]
+    public class SkillModifier
     {
         public SkillType skillType;
-        public int newLevel;
-        public int pointsSpent;
-        public DateTime timestamp = DateTime.Now;
-    }
+        public float value;
+        public ModifierOperation operation;
+        public string source;
+        public float duration;
+        public float startTime;
 
-    /// <summary>
-    /// Данные системы навыков для сохранения
-    /// </summary>
-    [System.Serializable]
-    public class SkillSystemSaveData
-    {
-        public Dictionary<string, int> skills = new Dictionary<string, int>();
-        public int availableSkillPoints = 0;
+        public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
+        {
+            this.skillType = skillType;
+            this.value = value;
+            this.operation = operation;
+            this.source = source;
+            this.duration = duration;
+            this.startTime = Time.time;
+        }
     }
 }

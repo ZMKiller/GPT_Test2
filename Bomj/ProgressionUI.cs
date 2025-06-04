@@ -767,7 +767,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Создать элемент работы
         /// </summary>
-        private void CreateJobItem(JobData job)
+        private void CreateJobItem(Job job)
         {
             GameObject jobItem = Instantiate(jobItemPrefab, jobsContainer);
             jobItems.Add(jobItem);
@@ -785,7 +785,7 @@ namespace HomelessToMillionaire
                 nameText.text = GetJobDisplayName(job.jobType);
 
             if (salaryText != null)
-                salaryText.text = $"Зарплата: ${job.baseSalary:F0}/час";
+                salaryText.text = $"Зарплата: ${job.payment:F0}/час";
 
             if (requirementsText != null)
                 requirementsText.text = GetJobRequirementsText(job);
@@ -818,12 +818,12 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Получить текст требований работы
         /// </summary>
-        private string GetJobRequirementsText(JobData job)
+        private string GetJobRequirementsText(Job job)
         {
             var requirements = new List<string>();
 
-            if (job.minLevel > 1)
-                requirements.Add($"Уровень: {job.minLevel}");
+            if (job.levelRequirement > 1)
+                requirements.Add($"Уровень: {job.levelRequirement}");
 
             if (job.skillRequirements != null)
             {
@@ -917,7 +917,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Создать элемент курса
         /// </summary>
-        private void CreateCourseItem(EducationData course)
+        private void CreateCourseItem(EducationCourse course)
         {
             GameObject courseItem = Instantiate(courseItemPrefab, coursesContainer);
             courseItems.Add(courseItem);
@@ -970,16 +970,16 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Получить текст требований образования
         /// </summary>
-        private string GetEducationRequirementsText(EducationData course)
+        private string GetEducationRequirementsText(EducationCourse course)
         {
             var requirements = new List<string>();
 
-            if (course.minLevel > 1)
-                requirements.Add($"Уровень: {course.minLevel}");
+            if (course.levelRequirement > 1)
+                requirements.Add($"Уровень: {course.levelRequirement}");
 
-            if (course.skillRequirements != null)
+            if (course.prerequisites != null)
             {
-                foreach (var req in course.skillRequirements)
+                foreach (var req in course.prerequisites)
                 {
                     if (req.Value > 0)
                         requirements.Add($"{GetSkillDisplayName(req.Key)}: {req.Value}");
@@ -992,16 +992,13 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Получить текст наград образования
         /// </summary>
-        private string GetEducationRewardText(EducationData course)
+        private string GetEducationRewardText(EducationCourse course)
         {
             var rewards = new List<string>();
 
-            if (course.experienceReward > 0)
-                rewards.Add($"Опыт: +{course.experienceReward}");
-
-            if (course.skillImprovement != null)
+            if (course.skillRewards != null)
             {
-                foreach (var improvement in course.skillImprovement)
+                foreach (var improvement in course.skillRewards)
                 {
                     if (improvement.Value > 0)
                         rewards.Add($"{GetSkillDisplayName(improvement.Key)}: +{improvement.Value}");

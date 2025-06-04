@@ -905,25 +905,4 @@ namespace HomelessToMillionaire
     /// Данные системы работы для сохранения
     /// </summary>
     [System.Serializable]
-    public class JobSystemSaveData
-    {
-        public string currentJobTitle = "";
-        public bool isWorking = false;
-        public float workTimeRemaining = 0f;
-        public int jobsCompletedToday = 0;
-        public long lastWorkDay = 0;
-        public List<CompletedJobData> completedJobs = new List<CompletedJobData>();
-    }
-
-    /// <summary>
-    /// Данные завершенной работы
-    /// </summary>
-    [System.Serializable]
-    public class CompletedJobData
-    {
-        public string title;
-        public string jobType;
-        public double payment;
-        public long completionTime;
-    }
 }

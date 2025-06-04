@@ -184,6 +184,16 @@ namespace HomelessToMillionaire
             return currentLocationData;
         }
 
+        public Location CurrentLocation
+        {
+            get
+            {
+                if (Enum.TryParse<Location>(currentLocationType.ToString(), out var loc))
+                    return loc;
+                return Location.Street;
+            }
+        }
+
         /// <summary>
         /// Получить тип текущей локации
         /// </summary>

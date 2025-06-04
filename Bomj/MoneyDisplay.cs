@@ -171,7 +171,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик заработка денег
         /// </summary>
-        private void OnMoneyEarned(float amount)
+        private void OnMoneyEarned(MoneyEventData data)
         {
             PlayMoneyEffect(true);
         }

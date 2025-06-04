@@ -925,38 +925,4 @@ namespace HomelessToMillionaire
     /// <summary>
     /// Данные системы образования для сохранения
     /// </summary>
-    [System.Serializable]
-    public class EducationSystemSaveData
-    {
-        public string currentCourseTitle = "";
-        public bool isStudying = false;
-        public float studyTimeRemaining = 0f;
-        public int coursesCompletedToday = 0;
-        public long lastStudyDay = 0;
-        public List<CompletedCourseData> completedCourses = new List<CompletedCourseData>();
-        public List<DegreeData> obtainedDegrees = new List<DegreeData>();
-    }
-
-    /// <summary>
-    /// Данные завершенного курса
-    /// </summary>
-    [System.Serializable]
-    public class CompletedCourseData
-    {
-        public string title;
-        public string educationType;
-        public long completionTime;
-    }
-
-    /// <summary>
-    /// Данные диплома
-    /// </summary>
-    [System.Serializable]
-    public class DegreeData
-    {
-        public string name;
-        public string educationType;
-        public long dateObtained;
-        public string institution;
-    }
 }

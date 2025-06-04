@@ -853,6 +853,22 @@ namespace HomelessToMillionaire
         Vandalism,
         IllegalBusiness,
         BribeAttempt
+
+    }
+
+    /// <summary>
+    /// Типы преступлений для полицейской системы
+    /// </summary>
+    public enum CrimeType
+    {
+        Fighting,
+        IllegalWeapon,
+        Theft,
+        Assault,
+        Vandalism,
+        ResistingArrest,
+        BriberyAttempt
+
     }
 
     /// <summary>

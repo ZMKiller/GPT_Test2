@@ -1013,20 +1013,6 @@ namespace HomelessToMillionaire
     }
 
     /// <summary>
-    /// Типы преступлений
-    /// </summary>
-    public enum CrimeType
-    {
-        Fighting,           // Драка
-        IllegalWeapon,      // Незаконное оружие
-        Theft,              // Кража
-        Assault,            // Нападение
-        Vandalism,          // Вандализм
-        ResistingArrest,    // Сопротивление аресту
-        BriberyAttempt      // Попытка дачи взятки
-    }
-
-    /// <summary>
     /// Действия полиции
     /// </summary>
     public enum PoliceAction

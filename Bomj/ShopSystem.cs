@@ -25,6 +25,8 @@ namespace HomelessToMillionaire
         private SkillSystem skillSystem;
         private AudioSource audioSource;
 
+        private float timePriceMultiplier = 1f;
+
         // Товары
         private Dictionary<ShopCategory, List<ShopItem>> shopItems = new Dictionary<ShopCategory, List<ShopItem>>();
         private List<ShopItem> purchasedItems = new List<ShopItem>();
@@ -391,7 +393,7 @@ namespace HomelessToMillionaire
                 return false;
             }
 
-            double totalCost = item.price * quantity;
+            double totalCost = item.price * quantity * timePriceMultiplier;
             
             if (!moneySystem.CanAfford(totalCost))
             {
@@ -608,7 +610,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик повышения уровня
         /// </summary>
-        private void OnLevelUp(LevelUpEventData data)
+        private void OnLevelUp(LevelUpData data)
         {
             // Проверить разблокировку новых категорий
             foreach (ShopCategory category in Enum.GetValues(typeof(ShopCategory)))
@@ -734,6 +736,14 @@ namespace HomelessToMillionaire
             }
         }
 
+        /// <summary>
+        /// Задать множитель цен на основе времени суток
+        /// </summary>
+        public void SetTimeBasedPriceMultiplier(float multiplier)
+        {
+            timePriceMultiplier = Mathf.Max(0.1f, multiplier);
+        }
+
         #endregion
     }
 
@@ -785,19 +795,4 @@ namespace HomelessToMillionaire
     /// Данные системы магазина для сохранения
     /// </summary>
     [System.Serializable]
-    public class ShopSystemSaveData
-    {
-        public List<PurchasedItemData> purchasedItems = new List<PurchasedItemData>();
-    }
-
-    /// <summary>
-    /// Данные купленного товара
-    /// </summary>
-    [System.Serializable]
-    public class PurchasedItemData
-    {
-        public string name;
-        public string category;
-        public long purchaseTime;
-    }
 }

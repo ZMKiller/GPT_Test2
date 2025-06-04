@@ -771,6 +771,16 @@ namespace HomelessToMillionaire
         }
 
         /// <summary>
+        /// Обновить параметры спавна в зависимости от времени суток
+        /// </summary>
+        public void UpdateTimeBasedSpawning(NPCSpawnSettings settings)
+        {
+            if (settings == null) return;
+            SetMaxNPCCount(settings.maxNPCs);
+            // Дополнительные настройки могут быть применены здесь
+        }
+
+        /// <summary>
         /// Принудительно спавнить NPC определенного типа
         /// </summary>
         public void ForceSpawnNPC(NPCType npcType)

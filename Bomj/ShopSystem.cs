@@ -791,8 +791,5 @@ namespace HomelessToMillionaire
         }
     }
 
-    /// <summary>
-    /// Данные системы магазина для сохранения
-    /// </summary>
-    [System.Serializable]
+    
 }

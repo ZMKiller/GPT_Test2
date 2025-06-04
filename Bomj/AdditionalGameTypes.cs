@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace HomelessToMillionaire
 
+namespace HomelessToMillionaire
 {
     // Extra enums missing from the original scripts
     public enum EducationCategory
@@ -134,5 +134,4 @@ namespace HomelessToMillionaire
         public long purchaseTime;
         public PurchasedItemData() { }
     }
-
 }

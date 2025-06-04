@@ -436,7 +436,7 @@ namespace HomelessToMillionaire
             {
                 currentDateTime = currentDateTime.ToBinary(),
                 currentSeason = currentSeason,
-                timeSpeed = currentTimeSpeed,
+                currentTimeSpeed = currentTimeSpeed,
                 enableTimeFlow = enableTimeFlow,
                 realSecondsPerGameHour = realSecondsPerGameHour
             };
@@ -449,7 +449,7 @@ namespace HomelessToMillionaire
         {
             currentDateTime = DateTime.FromBinary(data.currentDateTime);
             currentSeason = data.currentSeason;
-            currentTimeSpeed = data.timeSpeed;
+            currentTimeSpeed = data.currentTimeSpeed;
             enableTimeFlow = data.enableTimeFlow;
             realSecondsPerGameHour = data.realSecondsPerGameHour;
 

@@ -149,7 +149,6 @@ namespace HomelessToMillionaire
         Money,          // Изменение денег
         Critical,       // Критическое уведомление
         Important       // Важное уведомление
-
     }
 
     /// <summary>
@@ -347,7 +346,7 @@ namespace HomelessToMillionaire
         EarlyMorning,   // Раннее утро (5-8)
         Morning,        // Утро (8-12)
         Day,
-        Afternoon = Day,
+        Afternoon,
         Evening,        // Вечер (17-21)
         Night,          // Ночь (21-1)
         LateNight       // Поздняя ночь (1-5)

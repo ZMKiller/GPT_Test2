@@ -1195,7 +1195,9 @@ namespace HomelessToMillionaire
         {
             if (shopSystem != null)
             {
-                shopSystem.BuyItem(itemId);
+                var item = shopSystem.GetItemById(itemId);
+                if (item != null)
+                    shopSystem.BuyItem(item);
             }
         }
 
@@ -1206,7 +1208,9 @@ namespace HomelessToMillionaire
         {
             if (jobSystem != null)
             {
-                jobSystem.StartJob(jobType);
+                var job = jobSystem.GetJobsByType(jobType).FirstOrDefault();
+                if (job != null)
+                    jobSystem.StartJob(job);
             }
         }
 
@@ -1228,7 +1232,9 @@ namespace HomelessToMillionaire
         {
             if (educationSystem != null)
             {
-                educationSystem.StartCourse(educationType);
+                var course = educationSystem.GetCoursesByType(educationType).FirstOrDefault();
+                if (course != null)
+                    educationSystem.StartCourse(course);
             }
         }
 

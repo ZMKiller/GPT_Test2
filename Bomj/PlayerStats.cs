@@ -628,14 +628,13 @@ namespace HomelessToMillionaire
             if (shopSystem == null) return;
 
             var purchasedItems = shopSystem.GetPurchasedItems();
-            foreach (var itemId in purchasedItems)
+            foreach (var item in purchasedItems)
             {
-                var item = shopSystem.GetItemById(itemId);
                 if (item != null && item.statEffects != null)
                 {
                     foreach (var effect in item.statEffects)
                     {
-                        AddStatModifier(new StatModifier(effect.Key, effect.Value, ModifierOperation.Add, $"Item_{itemId}"));
+                        AddStatModifier(new StatModifier(effect.Key, effect.Value, ModifierOperation.Add, $"Item_{item.id}"));
                     }
                 }
             }

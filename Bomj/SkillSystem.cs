@@ -604,7 +604,6 @@ namespace HomelessToMillionaire
         public float startTime;
 
 
-
         public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
         {
             this.skillType = skillType;

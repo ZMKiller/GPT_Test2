@@ -11,6 +11,7 @@ namespace HomelessToMillionaire
         Health,     // Здоровье
         Hunger,     // Голод
         Mood,       // Настроение
+        Fatigue,
         Money,      // Деньги
         Level,      // Уровень
         Experience, // Опыт
@@ -466,6 +467,7 @@ namespace HomelessToMillionaire
         Pending,        // Ожидает
         Active,         // Активно
         Completed,      // Завершено
+        Expired,        // Истекло
         Cancelled,      // Отменено
         Failed          // Провалено
     }
@@ -606,6 +608,7 @@ namespace HomelessToMillionaire
     public enum WantedLevel
     {
         None,           // Нет розыска
+        Suspicious,     // Подозрения
         Minor,          // Незначительный (штраф)
         Moderate,       // Умеренный (арест возможен)
         High,           // Высокий (активный поиск)
@@ -912,6 +915,7 @@ namespace HomelessToMillionaire
         Political,          // Политические
         Social,             // Социальные
         Criminal,           // Криминальные
+        Crime = Criminal,
         Weather,            // Погодные
         Sports,             // Спортивные
         Entertainment,      // Развлечения
@@ -926,6 +930,9 @@ namespace HomelessToMillionaire
     public enum NewsImpact
     {
         None,               // Без влияния
+        Positive,
+        Negative,
+        Neutral,
         Minor,              // Незначительное
         Moderate,           // Умеренное
         Major,              // Значительное

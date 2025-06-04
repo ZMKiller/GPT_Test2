@@ -16,7 +16,6 @@ namespace HomelessToMillionaire
 
 
 
-
     public enum NotificationPosition
     {
         Top,
@@ -80,22 +79,6 @@ namespace HomelessToMillionaire
     [Serializable]
     public class SettingsOption
     {
-    [Serializable]
-    public class CompletedCourseData
-    {
-        public EducationType type;
-        public string title;
-        public double cost;
-        public long completionTime;
-    }
-
-    [Serializable]
-    public class DegreeData
-    {
-        public string name;
-        public EducationType type;
-        public long obtainedTime;
-    }
 
         public string optionName;
         public object value;
@@ -129,6 +112,25 @@ namespace HomelessToMillionaire
     }
 
     [Serializable]
+
+    public class CompletedCourseData
+    {
+        public EducationType type;
+        public string title;
+        public double cost;
+        public long completionTime;
+    }
+
+    [Serializable]
+    public class DegreeData
+    {
+        public string name;
+        public EducationType type;
+        public long obtainedTime;
+    }
+
+    [Serializable]
+
     public class PurchasedItemData
     {
         public string name;

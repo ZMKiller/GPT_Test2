@@ -41,7 +41,9 @@ namespace HomelessToMillionaire
 
         // События
         public event Action<EducationCourse> OnCourseStarted;
+        public event Action<EducationCourse> OnEducationStarted;
         public event Action<EducationCourse, EducationResult> OnCourseCompleted;
+        public event Action<EducationCourse, EducationResult> OnEducationCompleted;
         public event Action<EducationDegree> OnDegreeObtained;
         public event Action<List<EducationCourse>> OnAvailableCoursesUpdated;
 
@@ -349,6 +351,7 @@ namespace HomelessToMillionaire
             // Эффекты
             PlayCourseStartSound();
             OnCourseStarted?.Invoke(course);
+            OnEducationStarted?.Invoke(course);
             
             GameEvents.TriggerNotification(
                 $"Начато обучение: {course.title}",
@@ -406,9 +409,19 @@ namespace HomelessToMillionaire
         public float GetStudyProgress()
         {
             if (!isStudying || currentCourse == null) return 0f;
-            
+
             float totalTime = currentCourse.duration * 3600f;
             return 1f - (studyTimeRemaining / totalTime);
+        }
+
+        public float GetCurrentCourseProgress()
+        {
+            return GetStudyProgress();
+        }
+
+        public bool CanStartCourse(EducationCourse course)
+        {
+            return !isStudying && IsCourseAvailable(course);
         }
 
         /// <summary>
@@ -564,6 +577,7 @@ namespace HomelessToMillionaire
             // Эффекты и события
             PlayCourseCompleteSound();
             OnCourseCompleted?.Invoke(currentCourse, result);
+            OnEducationCompleted?.Invoke(currentCourse, result);
             
             GameEvents.TriggerEducationCompleted(new EducationEventData
             {

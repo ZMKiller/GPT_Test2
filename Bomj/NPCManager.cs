@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Random = UnityEngine.Random;
 
 namespace HomelessToMillionaire
 {
@@ -825,11 +826,11 @@ namespace HomelessToMillionaire
 
             // Радиус спавна
             Gizmos.color = Color.green;
-            Gizmos.DrawWireCircle(playerTransform.position, spawnRadius);
+            Gizmos.DrawWireSphere(playerTransform.position, spawnRadius);
             
             // Радиус удаления
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCircle(playerTransform.position, despawnDistance);
+            Gizmos.DrawWireSphere(playerTransform.position, despawnDistance);
             
             // Границы карты
             Vector2 bounds = useScreenBounds ? GetScreenBounds() : mapBounds;

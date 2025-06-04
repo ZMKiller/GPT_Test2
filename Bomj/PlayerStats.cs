@@ -14,12 +14,14 @@ namespace HomelessToMillionaire
         [SerializeField] private float maxHealth = 100f;        // Максимальное здоровье
         [SerializeField] private float maxHunger = 100f;        // Максимальный голод
         [SerializeField] private float maxMood = 100f;          // Максимальное настроение
+        [SerializeField] private float maxFatigue = 100f;
         
         [Header("Текущие значения")]
         [SerializeField] private float currentHealth = 100f;    // Текущее здоровье
         [SerializeField] private float currentHunger = 0f;      // Текущий голод (0 = сыт, 100 = очень голоден)
         [SerializeField] private float currentMood = 75f;       // Текущее настроение
         [SerializeField] private float currentMoney = 0f;       // Текущие деньги
+        [SerializeField] private float currentFatigue = 0f;
         [SerializeField] private int currentLevel = 1;          // Текущий уровень
         [SerializeField] private float currentExperience = 0f;  // Текущий опыт
 
@@ -64,6 +66,11 @@ namespace HomelessToMillionaire
         public float CurrentMood => currentMood;
         public float MaxMood => GetModifiedStat(StatType.Mood, maxMood);
         public float MoodPercentage => currentMood / Mathf.Max(MaxMood, 0.001f);
+
+        public float Fatigue => currentFatigue;
+        public float CurrentFatigue => currentFatigue;
+        public float MaxFatigue => maxFatigue;
+        public float FatiguePercentage => currentFatigue / Mathf.Max(maxFatigue, 0.001f);
 
         public float Money => currentMoney;
         public int Level => currentLevel;
@@ -181,6 +188,16 @@ namespace HomelessToMillionaire
         }
 
         public void AddMood(float amount) => ChangeMood(amount);
+
+
+        public void ChangeFatigue(float amount)
+        {
+            currentFatigue = Mathf.Clamp(currentFatigue + amount, 0f, maxFatigue);
+            GameEvents.TriggerStatChanged(StatType.Fatigue, 0, currentFatigue, maxFatigue);
+        }
+
+        public void AddFatigue(float amount) => ChangeFatigue(amount);
+
 
         /// <summary>
         /// Изменить количество денег

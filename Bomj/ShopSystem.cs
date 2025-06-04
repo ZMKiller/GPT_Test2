@@ -744,6 +744,25 @@ namespace HomelessToMillionaire
             timePriceMultiplier = Mathf.Max(0.1f, multiplier);
         }
 
+
+        // --- Legacy helpers for older scripts ---
+        public IEnumerable<ShopItem> GetAvailableItemsByCategory(ShopCategory category)
+        {
+            return GetItemsByCategory(category);
+        }
+
+        public bool CanBuyItem(string itemId)
+        {
+            var item = GetItemById(itemId);
+            return item != null && moneySystem.CanAfford(item.price * timePriceMultiplier);
+        }
+
+        public bool BuyItem(ShopItem item)
+        {
+            return PurchaseItem(item);
+        }
+
+
         #endregion
     }
 

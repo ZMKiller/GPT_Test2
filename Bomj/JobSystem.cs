@@ -259,6 +259,18 @@ namespace HomelessToMillionaire
             return availableJobs.Where(job => job.jobType == jobType && IsJobAvailable(job)).ToList();
         }
 
+        public bool CanStartJob(Job job)
+        {
+            return !isWorking && IsJobAvailable(job);
+        }
+
+        public float GetCurrentJobProgress()
+        {
+            if (!isWorking || currentJob == null)
+                return 0f;
+            return 1f - workTimeRemaining / (currentJob.duration * 3600f);
+        }
+
         /// <summary>
         /// Проверить доступность работы
         /// </summary>

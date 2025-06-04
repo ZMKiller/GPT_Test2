@@ -150,6 +150,14 @@ namespace HomelessToMillionaire
             return availableSkillPoints;
         }
 
+        public int GetTotalSpentSkillPoints()
+        {
+            int total = 0;
+            foreach (var kvp in skills)
+                total += kvp.Value;
+            return total;
+        }
+
         /// <summary>
         /// Добавить очки навыков
         /// </summary>

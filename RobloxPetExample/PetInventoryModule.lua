@@ -1,6 +1,7 @@
 local PetInventoryModule = {}
 local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local PetDataModule = require(ReplicatedStorage:WaitForChild("PetDataModule"))
@@ -10,6 +11,7 @@ for petName in pairs(PetDataModule.Pets) do
     if #DEFAULT_PETS >= 3 then break end
     table.insert(DEFAULT_PETS, petName)
 end
+
 
 local inventoryStore = DataStoreService:GetDataStore("PetInventory")
 
@@ -24,7 +26,9 @@ local function loadData(player)
         playerData[player.UserId] = data
     else
         playerData[player.UserId] = {
+
             Inventory = table.clone(DEFAULT_PETS),
+
             EquippedPet = nil,
             Favorites = {}
         }
@@ -63,6 +67,7 @@ function PetInventoryModule.ToggleFavorite(player, petName)
     end
 end
 
+
 -- Returns player data, creating default tables if needed.
 function PetInventoryModule.GetPlayerData(player)
     local data = playerData[player.UserId]
@@ -75,6 +80,7 @@ function PetInventoryModule.GetPlayerData(player)
         playerData[player.UserId] = data
     end
     return data
+
 end
 
 Players.PlayerAdded:Connect(loadData)

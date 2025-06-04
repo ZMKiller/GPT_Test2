@@ -744,6 +744,7 @@ namespace HomelessToMillionaire
             timePriceMultiplier = Mathf.Max(0.1f, multiplier);
         }
 
+
         // --- Legacy helpers for older scripts ---
         public IEnumerable<ShopItem> GetAvailableItemsByCategory(ShopCategory category)
         {
@@ -760,6 +761,7 @@ namespace HomelessToMillionaire
         {
             return PurchaseItem(item);
         }
+
 
         #endregion
     }
@@ -807,6 +809,7 @@ namespace HomelessToMillionaire
             this.maxStack = maxStack;
         }
 
+
         public ShopItem(string name, ShopCategory category, ItemQuality quality, double price,
                        int levelRequirement, string description, Dictionary<StatType, float> statEffects = null,
                        Dictionary<string, float> permanentEffects = null,
@@ -821,4 +824,5 @@ namespace HomelessToMillionaire
     /// Данные системы магазина для сохранения
     /// </summary>
     [System.Serializable]
+
 }

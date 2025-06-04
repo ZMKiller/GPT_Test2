@@ -1364,7 +1364,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик смены времени суток
         /// </summary>
-        private void OnTimePeriodChanged(TimePeriod newPeriod)
+        private void OnTimePeriodChanged(TimePeriod oldPeriod, TimePeriod newPeriod)
         {
             // Некоторые события могут завершаться со сменой времени
         }

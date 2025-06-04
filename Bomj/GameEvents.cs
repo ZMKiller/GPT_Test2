@@ -94,6 +94,9 @@ namespace HomelessToMillionaire
         public int skillPointsGained;       // Полученные очки навыков
         // older scripts expect the field name moneyGained
         public double moneyGained;
+        // for backwards compatibility
+        public double moneyBonus => moneyGained;
+
         public List<string> unlockedFeatures; // Разблокированные функции
 
         public LevelUpData() { }
@@ -168,10 +171,8 @@ namespace HomelessToMillionaire
         public Dictionary<SkillType, int> skillsImproved; // Улучшенные навыки
         public int experienceGained;        // Полученный опыт
         public bool certificateEarned;      // Получен ли сертификат
-
         // for backward compatibility
         public int skillPointsGained;
-
         public EducationEventData() { }
 
         public EducationEventData(EducationType education, double cost, int exp, bool certificate, int skillPoints = 0)

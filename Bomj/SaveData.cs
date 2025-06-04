@@ -203,6 +203,8 @@ namespace HomelessToMillionaire
         [Header("Общая статистика")]
         public float totalPlayTime = 0f;
         public int totalGameSessions = 0;
+        // number of times the player launched the game
+        public int timesPlayed = 0;
         public DateTime firstPlayDate = DateTime.Now;
         public DateTime lastPlayDate = DateTime.Now;
 
@@ -278,6 +280,8 @@ namespace HomelessToMillionaire
         public float gameTime = 0f;
         public float difficultyMultiplier = 1f;
         public TimeOfDay timeOfDay = TimeOfDay.Day;
+        // store current time period as string for backwards compatibility
+        public string currentTimeOfDay = TimeOfDay.Day.ToString();
         public string currentScene = "GameScene";
         public float gameSpeed = 1f;
 
@@ -657,9 +661,7 @@ namespace HomelessToMillionaire
         public DateTime currentCourseStartTime;
         public int coursesCompletedToday = 0;
         public DateTime lastCourseDate;
-
         public List<CompletedCourseData> completedCourses = new List<CompletedCourseData>();
-
         public List<DegreeData> obtainedDegrees = new List<DegreeData>();
         public List<string> earnedCertificates = new List<string>();
 
@@ -684,9 +686,7 @@ namespace HomelessToMillionaire
             currentCourseStartTime = DateTime.MinValue;
             coursesCompletedToday = 0;
             lastCourseDate = DateTime.MinValue;
-
             completedCourses = new List<CompletedCourseData>();
-
             obtainedDegrees = new List<DegreeData>();
             earnedCertificates = new List<string>();
         }
@@ -769,6 +769,9 @@ namespace HomelessToMillionaire
         public TimePeriod currentTimePeriod = TimePeriod.Day;
         public Season currentSeason = Season.Spring;
         public TimeSpeed currentTimeSpeed = TimeSpeed.Normal;
+        public float timeSpeed = 1f;
+        public bool enableTimeFlow = true;
+        public float realSecondsPerGameHour = 60f;
         public float timeMultiplier = 1f;
         public int currentDay = 1;
         public bool isPaused = false;

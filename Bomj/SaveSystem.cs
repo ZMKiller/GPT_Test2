@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -1145,10 +1146,13 @@ namespace HomelessToMillionaire
             if (saveData == null) return false;
 
             // Проверить версию
-            if (saveData.gameState.version < SaveVersion.MIN_SUPPORTED_VERSION)
+            if (int.TryParse(saveData.gameState.version, out int ver))
             {
-                Debug.LogWarning($"Устаревшая версия сохранения: {saveData.gameState.version}");
-                return false;
+                if (ver < SaveVersion.MIN_SUPPORTED_VERSION)
+                {
+                    Debug.LogWarning($"Устаревшая версия сохранения: {saveData.gameState.version}");
+                    return false;
+                }
             }
 
             // Проверить контрольную сумму

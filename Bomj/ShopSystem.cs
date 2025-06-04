@@ -444,7 +444,7 @@ namespace HomelessToMillionaire
                     NotificationType.Success
                 );
 
-                Debug.Log($"Куплено: {item.name} x{quantity} за {GameUtils.FormatMoney(totalCost)}");
+                Debug.Log($"Куплено: {item.name} x{quantity} за {GameUtils.FormatMoney((float)totalCost)}");
                 return true;
             }
 
@@ -714,7 +714,7 @@ namespace HomelessToMillionaire
                 Debug.Log($"=== {GetCategoryName(category.Key)} ===");
                 foreach (var item in category.Value)
                 {
-                    Debug.Log($"{item.name} - {GameUtils.FormatMoney(item.price)} " +
+                    Debug.Log($"{item.name} - {GameUtils.FormatMoney((float)item.price)} " +
                              $"(Уровень: {item.levelRequirement}, Качество: {item.quality})");
                 }
             }
@@ -748,6 +748,12 @@ namespace HomelessToMillionaire
         public IEnumerable<ShopItem> GetAvailableItemsByCategory(ShopCategory category)
         {
             return GetItemsByCategory(category);
+        }
+
+        // Compatibility wrapper
+        public IEnumerable<ShopItem> GetItemsByCategory(ShopCategory category)
+        {
+            return GetCategoryItems(category);
         }
 
         public bool CanBuyItem(string itemId)
@@ -816,5 +822,4 @@ namespace HomelessToMillionaire
         {
         }
     }
-
  }

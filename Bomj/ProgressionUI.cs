@@ -507,7 +507,7 @@ namespace HomelessToMillionaire
 
             // Заполнить данные
             int currentLevel = skillSystem.GetSkillLevel(skillType);
-            int upgradeCost = skillSystem.GetSkillUpgradeCost(currentLevel);
+            int upgradeCost = skillSystem.GetSkillUpgradeCost(skillType);
             bool canUpgrade = skillSystem.CanUpgradeSkill(skillType);
 
             if (nameText != null)
@@ -779,7 +779,7 @@ namespace HomelessToMillionaire
             var requirementsText = jobItem.transform.Find("RequirementsText")?.GetComponent<TextMeshProUGUI>();
 
             // Заполнить данные
-            bool canStart = jobSystem.CanStartJob(job.jobType);
+            bool canStart = jobSystem.CanStartJob(job);
 
             if (nameText != null)
                 nameText.text = GetJobDisplayName(job.jobType);
@@ -930,7 +930,7 @@ namespace HomelessToMillionaire
             var rewardText = courseItem.transform.Find("RewardText")?.GetComponent<TextMeshProUGUI>();
 
             // Заполнить данные
-            bool canStart = educationSystem.CanStartCourse(course.educationType);
+            bool canStart = educationSystem.CanStartCourse(course);
 
             if (nameText != null)
                 nameText.text = GetEducationDisplayName(course.educationType);
@@ -1293,7 +1293,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик начала работы
         /// </summary>
-        private void OnJobStarted(JobType jobType)
+        private void OnJobStarted(Job job)
         {
             if (currentTab == ProgressionTab.JobCenter)
             {
@@ -1304,7 +1304,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик завершения работы
         /// </summary>
-        private void OnJobCompleted(JobEventData data)
+        private void OnJobCompleted(Job job, JobResult result)
         {
             if (currentTab == ProgressionTab.JobCenter)
             {
@@ -1315,7 +1315,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик начала образования
         /// </summary>
-        private void OnEducationStarted(EducationType educationType)
+        private void OnEducationStarted(EducationCourse course)
         {
             if (currentTab == ProgressionTab.Education)
             {
@@ -1326,7 +1326,7 @@ namespace HomelessToMillionaire
         /// <summary>
         /// Обработчик завершения образования
         /// </summary>
-        private void OnEducationCompleted(EducationEventData data)
+        private void OnEducationCompleted(EducationCourse course, EducationResult result)
         {
             if (currentTab == ProgressionTab.Education)
             {

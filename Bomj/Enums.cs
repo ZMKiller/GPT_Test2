@@ -147,7 +147,9 @@ namespace HomelessToMillionaire
         Danger,         // Опасность
         Achievement,    // Достижение
         Money,          // Изменение денег
-        Critical        // Критическое уведомление
+        Critical,       // Критическое уведомление
+        Important       // Важное уведомление
+
     }
 
     /// <summary>

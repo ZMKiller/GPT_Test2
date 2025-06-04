@@ -630,10 +630,9 @@ namespace HomelessToMillionaire
 
             // Показать уведомление
             GameEvents.TriggerNotification(
-                eventData.title, 
-                GetNotificationTypeForEvent(eventData), 
-                NotificationPriority.High,
-                eventData.description);
+                $"{eventData.title}: {eventData.description}",
+                GetNotificationTypeForEvent(eventData),
+                NotificationPriority.High);
 
             if (showDebugInfo)
             {
@@ -800,7 +799,7 @@ namespace HomelessToMillionaire
             // Опыт
             if (rewards.experience > 0 && levelSystem != null)
             {
-                levelSystem.AddExperience(rewards.experience, "Событие");
+                levelSystem.AddExperience((int)rewards.experience, "Событие");
             }
 
             // Характеристики
@@ -1175,6 +1174,7 @@ namespace HomelessToMillionaire
         public float minMood = 0f;
         public float maxHunger = 100f;
         public float maxFatigue = 100f;
+        public float minFatigue = 0f;
         public int minCharisma = 0;
         public int minEducation = 0;
         public int minPhysicalFitness = 0;

@@ -189,7 +189,6 @@ namespace HomelessToMillionaire
 
         public void AddMood(float amount) => ChangeMood(amount);
 
-
         public void ChangeFatigue(float amount)
         {
             currentFatigue = Mathf.Clamp(currentFatigue + amount, 0f, maxFatigue);
@@ -197,7 +196,6 @@ namespace HomelessToMillionaire
         }
 
         public void AddFatigue(float amount) => ChangeFatigue(amount);
-
 
         /// <summary>
         /// Изменить количество денег

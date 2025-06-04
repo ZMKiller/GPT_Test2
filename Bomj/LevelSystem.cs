@@ -40,6 +40,9 @@ namespace HomelessToMillionaire
         public event Action<int> OnExperienceGained;
         public event Action<int> OnPrestigeUp;
 
+        // Public accessor for other systems
+        public int CurrentLevel => playerStats != null ? playerStats.Level : 0;
+
         #region Unity Methods
 
         private void Awake()
@@ -180,7 +183,7 @@ namespace HomelessToMillionaire
             int currentLevel = playerStats.Level;
             if (currentLevel >= maxLevel) return 1f;
 
-            int currentExp = playerStats.Experience;
+            int currentExp = Mathf.FloorToInt(playerStats.Experience);
             int totalExpForCurrentLevel = GetTotalExperienceRequirement(currentLevel);
             int totalExpForNextLevel = GetTotalExperienceRequirement(currentLevel + 1);
             
@@ -198,7 +201,7 @@ namespace HomelessToMillionaire
             int currentLevel = playerStats.Level;
             if (currentLevel >= maxLevel) return 0;
 
-            int currentExp = playerStats.Experience;
+            int currentExp = Mathf.FloorToInt(playerStats.Experience);
             int requiredExp = GetTotalExperienceRequirement(currentLevel + 1);
             
             return Mathf.Max(0, requiredExp - currentExp);

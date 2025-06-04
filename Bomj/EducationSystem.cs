@@ -827,7 +827,7 @@ namespace HomelessToMillionaire
             Debug.Log($"Доступно курсов: {courses.Count}");
             foreach (var course in courses)
             {
-                Debug.Log($"{course.title} - {GameUtils.FormatMoney(course.cost)} " +
+                Debug.Log($"{course.title} - {GameUtils.FormatMoney((float)course.cost)} " +
                          $"(Уровень: {course.levelRequirement}, Продолжительность: {course.duration}ч)");
             }
         }

@@ -518,7 +518,6 @@ namespace HomelessToMillionaire
             if (data != null)
             {
                 if (data.skillLevels != null && data.skillLevels.Count > 0)
-
                 {
                     foreach (var kvp in data.skillLevels)
                     {
@@ -537,7 +536,6 @@ namespace HomelessToMillionaire
                         }
                     }
                 }
-
                 availableSkillPoints = data.availableSkillPoints;
             }
 
@@ -612,7 +610,6 @@ namespace HomelessToMillionaire
         public string source;
         public float duration;
         public float startTime;
-
 
         public SkillModifier(SkillType skillType, float value, ModifierOperation operation, string source, float duration)
         {

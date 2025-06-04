@@ -168,15 +168,20 @@ namespace HomelessToMillionaire
         public Dictionary<SkillType, int> skillsImproved; // Улучшенные навыки
         public int experienceGained;        // Полученный опыт
         public bool certificateEarned;      // Получен ли сертификат
+
+        // for backward compatibility
+        public int skillPointsGained;
+
         public EducationEventData() { }
 
-        public EducationEventData(EducationType education, double cost, int exp, bool certificate)
+        public EducationEventData(EducationType education, double cost, int exp, bool certificate, int skillPoints = 0)
         {
             this.educationType = education;
             this.cost = cost;
             this.experienceGained = exp;
             this.certificateEarned = certificate;
             this.skillsImproved = new Dictionary<SkillType, int>();
+            this.skillPointsGained = skillPoints;
         }
     }
 

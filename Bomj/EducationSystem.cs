@@ -384,7 +384,7 @@ namespace HomelessToMillionaire
             studyTimeRemaining = 0f;
 
             GameEvents.TriggerNotification("Обучение прекращено досрочно", NotificationType.Warning);
-            Debug.Log($"Обучение прекращено досрочно. Возврат средств: {GameUtils.FormatMoney(refund)}");
+            Debug.Log($"Обучение прекращено досрочно. Возврат средств: {GameUtils.FormatMoney((float)refund)}");
         }
 
         /// <summary>

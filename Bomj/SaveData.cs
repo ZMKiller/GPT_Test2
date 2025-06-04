@@ -657,7 +657,9 @@ namespace HomelessToMillionaire
         public DateTime currentCourseStartTime;
         public int coursesCompletedToday = 0;
         public DateTime lastCourseDate;
-        public List<EducationType> completedCourses = new List<EducationType>();
+
+        public List<CompletedCourseData> completedCourses = new List<CompletedCourseData>();
+
         public List<DegreeData> obtainedDegrees = new List<DegreeData>();
         public List<string> earnedCertificates = new List<string>();
 
@@ -682,7 +684,9 @@ namespace HomelessToMillionaire
             currentCourseStartTime = DateTime.MinValue;
             coursesCompletedToday = 0;
             lastCourseDate = DateTime.MinValue;
-            completedCourses = new List<EducationType>();
+
+            completedCourses = new List<CompletedCourseData>();
+
             obtainedDegrees = new List<DegreeData>();
             earnedCertificates = new List<string>();
         }

@@ -285,8 +285,8 @@ namespace HomelessToMillionaire
         /// <param name="type">Тип уведомления</param>
         /// <param name="priority">Приоритет</param>
         /// <param name="duration">Время отображения (опционально)</param>
-        public void ShowNotification(string message, NotificationType type = NotificationType.Info, 
-                                   NotificationPriority priority = NotificationPriority.Normal, 
+        public void ShowNotification(string message, NotificationType type = NotificationType.Info,
+                                   NotificationPriority priority = NotificationPriority.Normal,
                                    float duration = -1f)
         {
             if (string.IsNullOrEmpty(message))
@@ -309,6 +309,13 @@ namespace HomelessToMillionaire
 
             // Добавить в очередь
             notificationQueue.Enqueue(notificationData);
+        }
+
+        public void ShowNotification(string title, string message, NotificationType type,
+                                     NotificationPriority priority = NotificationPriority.Normal,
+                                     float duration = -1f)
+        {
+            ShowNotification($"{title}: {message}", type, priority, duration);
         }
 
         /// <summary>
